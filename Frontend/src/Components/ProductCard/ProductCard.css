@@ -1,0 +1,36 @@
+.category-container {
+    max-width: 1140px; /* Adjusted container width */
+    margin: 0 auto; /* Center the container */
+    padding: 0 15px; /* Decrease the padding on the sides */
+}
+
+.row {
+    margin-top: 30px;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.card {
+    height: auto;
+    border-radius: 10px;
+}
+
+.product-img {
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-footer {
+    padding: 10px;
+}
