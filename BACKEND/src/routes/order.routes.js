@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createOrder, getOrderById, updateOrderStatus, deleteOrder , getAllOrders } from '../controllers/order.controller.js';
+import { createOrder, getOrderByUserId, updateOrderStatus, deleteOrder , getAllOrders } from '../controllers/order.controller.js';
 
 const router = Router();
 
@@ -7,7 +7,7 @@ const router = Router();
 router.post('/order', createOrder); // Create a new order
 
 // Route to get an order by its ID
-router.get('/order/:orderId', getOrderById); // Get a specific order
+router.get('/order/:orderId', getOrderByUserId); // Get a specific order
 
 // Route to update the order status
 router.put('/order/status', updateOrderStatus); // Update order status

@@ -52,4 +52,4 @@ const stockSchema = new Schema(
   }
 );
 
-export const Product = mongoose.model("Stock", stockSchema);
+export const Product = mongoose.model("Product", stockSchema);

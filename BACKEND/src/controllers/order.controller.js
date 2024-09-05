@@ -74,17 +74,17 @@ const createOrder = async (req, res) => {
   }
 };
 // Get an order by ID
-const getOrderById = async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.orderId)
-    //.populate('products.productId');
-    if (!order) return ApiResponse.error(res, 404, 'Order not found');
+// const getOrderById = async (req, res) => {
+//   try {
+//     const order = await Order.findById(req.params.orderId)
+//     //.populate('products.productId');
+//     if (!order) return ApiResponse.error(res, 404, 'Order not found');
 
-    return ApiResponse.success(res, 200, 'Order retrieved successfully', { order });
-  } catch (error) {
-    return ApiResponse.error(res, 500, 'Error retrieving order', error.message);
-  }
-};
+//     return ApiResponse.success(res, 200, 'Order retrieved successfully', { order });
+//   } catch (error) {
+//     return ApiResponse.error(res, 500, 'Error retrieving order', error.message);
+//   }
+// };
 
 // Update order status
 const updateOrderStatus = async (req, res) => {
@@ -137,33 +137,33 @@ const getAllOrders = asyncHandler(async (req, res) => {
       throw new ApiError("No orders found", 404);
   }
 
-  res.status(200).json({allOrders});
+  return res.status(200).json({allOrders});
 });
 
 //get order by user id
-// const getCartByUserId = async (req, res) => {
-//   try {
-//     const userId = req.params.userId;
+const getOrderByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
 
-//     const cart = await Cart.findOne({ userId })
-//       .populate('userId', 'username name gender address pincode email phoneNumber')
-//       .populate({
-//         path: 'products.productId',
-//         select: 'photo description Mrp ', // Include photo in the selection
-//       });
+    const order = await Order.findOne({ userId })
+      .populate('userId', 'username name gender address pincode email phoneNumber')
+      .populate({
+        path: 'products.productId',
+        select: 'photo description Mrp ', // Include photo in the selection
+      });
 
-//     if (!cart) {
-//       return res.status(404).json({ message: 'Cart not found for this user' });
-//     }
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found for this user' });
+    }
 
-//     res.status(200).json(cart);
-//   } catch (error) {
-//     console.error('Error retrieving cart:', error.message);
-//     res.status(500).json({ message: 'Error retrieving cart', error: error.message });
-//   }
-// };
+    return res.status(200).json(order);
+  } catch (error) {
+    console.error('Error retrieving cart:', error.message);
+    res.status(500).json({ message: 'Error retrieving cart', error: error.message });
+  }
+};
 
-export { createOrder , getOrderById , updateOrderStatus , deleteOrder , getAllOrders };
+export { createOrder , getOrderByUserId , updateOrderStatus , deleteOrder , getAllOrders };
 
 
 
