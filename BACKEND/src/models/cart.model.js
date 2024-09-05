@@ -12,7 +12,7 @@ const cartSchema = new Schema({
     {
       productId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Stock', // Reference to the Stock model
+        ref: 'Product', // Reference to the Stock model
         required: true,
       },
       quantity: {
@@ -36,7 +36,7 @@ cartSchema.pre('save', async function (next) {
   // Calculate the total price
   cart.totalPrice = 0; // Reset totalPrice to 0
   for (let item of cart.products) {
-    const product = await mongoose.model('Stock').findById(item.productId);
+    const product = await mongoose.model('Product').findById(item.productId);
     if (product) {
       cart.totalPrice += product.Mrp * item.quantity;
     }

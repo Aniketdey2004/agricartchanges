@@ -4,16 +4,20 @@ import { createOrder, getOrderByUserId, updateOrderStatus, deleteOrder , getAllO
 const router = Router();
 
 // Route to create a new order
-router.post('/order', createOrder); // Create a new order
+router.post('/order', createOrder); // Create a new order 
+//http://localhost:3026/api/v1/orders/order
 
 // Route to get an order by its ID
-router.get('/order/:orderId', getOrderByUserId); // Get a specific order
+router.get('/order/:userId', getOrderByUserId); // Get a specific order
+//http://localhost:3026/api/v1/orders/order/:userId
 
 // Route to update the order status
 router.put('/order/status', updateOrderStatus); // Update order status
+//http://localhost:3026/api/v1/orders/order/status
 
 // Route to delete an order
 router.delete('/order/:orderId', deleteOrder); // Delete an order
+//http://localhost:3026/api/v1/orders/order/:orderId
 
 // Route to delete an order
 router.get('/', getAllOrders); // Delete an order

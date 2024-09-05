@@ -23,6 +23,7 @@ import OrderRouter from './routes/order.routes.js';
 import deliverypartnerRouter from './routes/deliverypartner.routes.js'
 import cartRouter from './routes/cart.routes.js'
 
+
 // Routes declaration
 app.use("/api/v1/stocks", stockRouter);
 app.use("/api/v1/users", userRouter);
@@ -30,6 +31,7 @@ app.use("/api/v1/farmers", farmerRouter);
 app.use("/api/v1/orders", OrderRouter);
 app.use("/api/v1/deliverypartners", deliverypartnerRouter);
 app.use("/api/v1/cart", cartRouter);
+//app.use("api/v1/CSA" , CSARouter);
 
 // Global error-handling middleware (add this after all routes)
 app.use((err, req, res, next) => {

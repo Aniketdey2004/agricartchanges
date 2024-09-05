@@ -55,12 +55,12 @@ export const getStockDetails = asyncHandler(async (req, res) => {
     } else {
         // Otherwise, search by category
         stockItem = await Product.find({ category: searchParam });
-        if (!stockItem || stockItem.length === 0) {
+        if (!stockItem ) {
             throw new ApiError("No products found in this category", 404);
         }
     }
 
-    res.status(200).json(stockItem); // Directly return the stockItem object(s)
+    return res.status(200).json(stockItem); // Directly return the stockItem object(s)
 });
 
 // // Controller function to get stock details by either `productId` or `category`.

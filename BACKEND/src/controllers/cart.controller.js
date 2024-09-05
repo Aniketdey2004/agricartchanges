@@ -39,10 +39,10 @@ const addToCart = async (req, res) => {
 
     await cart.save();
 
-    res.status(200).json({ message: 'Product added to cart successfully', cart });
+    return res.status(200).json({ message: 'Product added to cart successfully', cart });
   } catch (error) {
     console.error('Error adding to cart:', error.message);
-    res.status(500).json({ message: 'Error adding to cart', error: error.message });
+    return res.status(500).json({ message: 'Error adding to cart', error: error.message });
   }
 };
 
@@ -85,10 +85,10 @@ const deleteFromCart = async (req, res) => {
 
       await cart.save();
 
-      res.status(200).json({ message: 'Product removed from cart successfully', cart });
+      return res.status(200).json({ message: 'Product removed from cart successfully', cart });
   } catch (error) {
       console.error('Error deleting from cart:', error.message);
-      res.status(500).json({ message: 'Error deleting from cart', error: error.message });
+      return res.status(500).json({ message: 'Error deleting from cart', error: error.message });
   }
 };
 
@@ -122,12 +122,12 @@ const checkoutCart = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
-    res.status(201).json({ message: 'Order created successfully', order });
+    return res.status(201).json({ message: 'Order created successfully', order });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
     console.error('Error during checkout:', error.message);
-    res.status(500).json({ message: 'Error during checkout', error: error.message });
+    return res.status(500).json({ message: 'Error during checkout', error: error.message });
   }
 };
 
@@ -148,10 +148,10 @@ const getCartByUserId = async (req, res) => {
       return res.status(404).json({ message: 'Cart not found for this user' });
     }
 
-    res.status(200).json(cart);
+    return res.status(200).json(cart);
   } catch (error) {
     console.error('Error retrieving cart:', error.message);
-    res.status(500).json({ message: 'Error retrieving cart', error: error.message });
+    return res.status(500).json({ message: 'Error retrieving cart', error: error.message });
   }
 };
 

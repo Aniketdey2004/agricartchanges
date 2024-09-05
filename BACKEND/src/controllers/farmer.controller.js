@@ -137,7 +137,7 @@ const loginFarmer = asyncHandler(async (req, res) => {
     const loggedInFarmer = await Farmer.findById(farmer._id).select("-password -refreshtoken");
 
     // Send tokens and farmer details in the response
-    res.status(200).json({
+    return res.status(200).json({
         loggedInFarmer,
         accessToken,
         refreshToken,

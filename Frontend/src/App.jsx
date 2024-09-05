@@ -15,6 +15,9 @@ import Cart from './Pages/Cart/Cart';
 import Profile from './Pages/CustomerProfile/Profile';
 import LoginFarmer from './Pages/Login/LoginFarmer';
 import RegisterAsFarmer from './Pages/Register/RegisterAsFarmer';
+import Cust from './Components/Private/Cust';
+import Farmer from './Components/Private/Farmer';
+import Entry from './Components/Private/entry';
 function App() {
   const [loggedUser,setLoggedUser]=useState(JSON.parse(localStorage.getItem("user")));
   return (
@@ -26,14 +29,14 @@ function App() {
           <Route path='/about-us' element={<About />} />
           <Route path='/awareness' element={<Awarness/>}/>
           <Route path='/contact-us' element={<Private component={Contact}/>} />
-          <Route path='/Login' element={<Login/>} />
-          <Route path='/Register' element={<Register/>} />
+          <Route path='/Login' element={<Entry component={Login}/>} />
+          <Route path='/Register' element={<Entry component={Register}/>} />
+          <Route path='/login-farmer' element={<Entry component={LoginFarmer}/>} />
+          <Route path='/register-farmer' element={<Entry component={RegisterAsFarmer}/>} />
           <Route path='/categories' element={<Private component={Categories}/>}/>
           <Route path='/ProductView' element={<Private component={ProductView}/>}/>
-          <Route path='/cart' element={<Private component={Cart}/>}/>
-          <Route path='/profile' element={<Private component={Profile}/>}/>
-          <Route path='/login-farmer' element={<LoginFarmer/>} />
-          <Route path='/register-farmer' element={<RegisterAsFarmer/>} />
+          <Route path='/cart' element={<Cust component={Cart}/>}/>
+          <Route path='/profile' element={<Cust component={Profile}/>}/>
         </Routes>
       </BrowserRouter>
       </UserContext.Provider>

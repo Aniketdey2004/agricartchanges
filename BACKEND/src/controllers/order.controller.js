@@ -145,18 +145,18 @@ const getOrderByUserId = async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    const order = await Order.findOne({ userId })
+    const orders = await Order.find({ userId })
       .populate('userId', 'username name gender address pincode email phoneNumber')
       .populate({
         path: 'products.productId',
         select: 'photo description Mrp ', // Include photo in the selection
       });
 
-    if (!order) {
+    if (orders.length === 0 ) {
       return res.status(404).json({ message: 'Order not found for this user' });
     }
 
-    return res.status(200).json(order);
+    return res.status(200).json(orders);
   } catch (error) {
     console.error('Error retrieving cart:', error.message);
     res.status(500).json({ message: 'Error retrieving cart', error: error.message });
