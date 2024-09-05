@@ -15,7 +15,7 @@ export default function ProductView() {
 
     // State for the cart
     const [cart, setCart] = useState({
-        userId: loggedData?.loggedUser?.data?.user?._id || '', 
+        userId: loggedData?.loggedUser?.loggedInUser?._id || '', 
         productId: details?._id || '',
         quantity: 1,
     });
@@ -77,8 +77,8 @@ export default function ProductView() {
                     {/* Product Details on the Right */}
                     <div className="col-md-7 order-md-2 order-2">
                         <h2 className="product-name mb-3">{details.description}</h2>
-                        <p className="product-detail"><strong>MRP:</strong> ₹{details.Mrp}</p>
-                        <p className="product-detail"><strong>Units:</strong> {details.units}</p>
+                        <p className="product-detail"><strong>MRP:</strong> ₹{details.Mrp}/Kg</p>
+                        <p className="product-detail"><strong>Units:</strong> {details.units}Kg</p>
                         <p className="product-detail"><strong>Date of Produce:</strong> {details.date_of_produce}</p>
                         <p className="product-detail"><strong>Growing Practices:</strong> {details.growing_practices}</p>
                         <p className="product-detail"><strong>Place of Origin:</strong> {details.place_of_origin}</p>

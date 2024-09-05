@@ -42,29 +42,35 @@ export default function Register() {
     .then((response) =>{
       if (response.status === 409) {
         setMessage({ type: "error", text: "username or email already exists!" });
+        console.log('Status code from API:', response.status);
     } else if (response.status === 500) {
         setMessage({ type: "error", text: "Internal server error" });
+        console.log('Status code from API:', response.status);
     } 
      else if (response.status === 201) {
-        return response.json(); // only process the response JSON if it's successful
+      console.log('Status code from API:', response.status);
+      setMessage({ type: "success", text: "User registered successfully" });
+      return response.json(); // only process the response JSON if it's successful
     } else {
         setMessage({ type: "error", text: "Something went wrong, please try again." });
+        console.log('Status code from API:', response.status);
     }
-    setTimeout(() => {
-        setMessage({ type: "invisible-msg", text: "Dummy Msg" });
-    }, 5000);
-    setUser({
-      username: '',
-      name: '',
-      password: '',
-      gender: '',
-      address: '',
-      pincode: '',
-      email: '',
-      phoneNumber: '',
-    })
+    
     })
     .then((data)=>{
+      setTimeout(() => {
+        setMessage({ type: "invisible-msg", text: "Dummy Msg" });
+      }, 5000);
+      setUser({
+        username: '',
+        name: '',
+        password: '',
+        gender: '',
+        address: '',
+        pincode: '',
+        email: '',
+        phoneNumber: '',
+      })
     })
     .catch((err) => {
         console.log(err);
@@ -75,8 +81,9 @@ export default function Register() {
   return (
     <>
       <Navbar page={"home"}/>
-      <div className="container">
+      <div className="container register-form">
         <form onSubmit={handleSubmit}>
+          <h2>Customer Registration</h2>
           <div className="mb-3">
             <label className="form-label">Username</label>
             <input

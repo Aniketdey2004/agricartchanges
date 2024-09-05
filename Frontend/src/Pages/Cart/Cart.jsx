@@ -1,34 +1,43 @@
 import React, { useEffect, useState, useContext } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../../Components/Footer/Footer";
-import "./Cart.css"; // Add CSS as needed
 import { UserContext } from "../../contexts/UserContext";
+import "./Cart.css"; // You can keep custom styles here if needed
 
 export default function Cart() {
-  const { loggedUser } = useContext(UserContext);
+  const loggedData = useContext(UserContext);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+  const [orderSuccess, setOrderSuccess] = useState(false); // State to control order success message
+  const [order, setOrder] = useState({
+    userId: loggedData.loggedUser.loggedInUser._id,
+    products: cart,
+    address: loggedData.loggedUser.loggedInUser.address,
+    pincode: loggedData.loggedUser.loggedInUser.pincode,
+  });
 
   useEffect(() => {
+    console.log(loggedData);
     const fetchCartItems = async () => {
       if (
-        loggedUser &&
-        loggedUser.data &&
-        loggedUser.data.user &&
-        loggedUser.data.user._id
+        loggedData &&
+        loggedData.loggedUser.loggedInUser &&
+        loggedData.loggedUser.loggedInUser._id
       ) {
         try {
           const response = await fetch(
-            `http://localhost:3026/api/v1/cart/${loggedUser.data.user._id}`
+            `http://localhost:3026/api/v1/cart/${loggedData.loggedUser.loggedInUser._id}`
           );
           const data = await response.json();
 
-          // Check API response structure
           console.log("API Response Data:", data);
 
-          // Ensure data.products exists and is an array
           if (response.ok && Array.isArray(data.products)) {
-            setCart(data.products); // Adjust based on actual API response structure
+            setOrder((prevDetails) => {
+              return { ...prevDetails, products: data.products };
+            });
+            setCart(data.products);
           } else {
             console.error(
               "Failed to fetch cart items:",
@@ -48,7 +57,7 @@ export default function Cart() {
     };
 
     fetchCartItems();
-  }, [loggedUser]);
+  }, [loggedData.loggedUser]);
 
   const handleRemoveFromCart = async (productId, quantity) => {
     try {
@@ -58,9 +67,9 @@ export default function Cart() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: loggedUser.data.user._id,
+          userId: loggedData.loggedUser.loggedInUser._id,
           productId,
-          quantity: quantity || 1, // Default to 1 if quantity is not provided
+          quantity: quantity || 1,
         }),
       });
 
@@ -78,43 +87,12 @@ export default function Cart() {
     }
   };
 
-  const handleUpdateQuantity = async (productId, quantity) => {
-    const qty = parseInt(quantity, 10);
+  const handleProceedToPayment = () => {
+    setShowModal(true); // Show the modal when the button is clicked
+  };
 
-    if (isNaN(qty) || qty <= 0) {
-      console.error("Invalid quantity value");
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:3026/api/v1/cart/update`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: loggedUser.data.user._id,
-          productId,
-          quantity: qty,
-        }),
-      });
-
-      if (response.ok) {
-        setCart(
-          cart.map((item) =>
-            item.productId._id === productId ? { ...item, quantity: qty } : item
-          )
-        ); // Update state after successful update
-      } else {
-        const errorData = await response.json();
-        console.error(
-          "Failed to update item quantity:",
-          errorData.message || "No message provided"
-        );
-      }
-    } catch (error) {
-      console.error("Error updating item quantity:", error);
-    }
+  const handleCloseModal = () => {
+    setShowModal(false); // Hide the modal
   };
 
   const subtotal = cart.reduce(
@@ -122,17 +100,53 @@ export default function Cart() {
     0
   );
 
+  function pay(event) {
+    event.preventDefault();
+    fetch("http://localhost:3026/api/v1/orders/order", {
+      method: "POST",
+      body: JSON.stringify(order),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          setOrderSuccess(true); // Show success message
+          setShowModal(false); // Close the modal
+          setTimeout(() => {
+            setOrderSuccess(false);
+          }, 5000);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <>
       <Navbar />
       <div className="container my-5">
-        <h2>Your Cart</h2>
+        <h2 className="mb-4">Your Cart</h2>
         {loading ? (
-          <p>Loading...</p>
+          <div className="text-center">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
         ) : cart.length === 0 ? (
-          <p>Your cart is empty.</p>
+          <div className="alert alert-warning" role="alert">
+            Your cart is empty.
+          </div>
         ) : (
           <>
+            {orderSuccess && (
+              <div className="alert alert-success" role="alert">
+                Order created successfully!
+              </div>
+            )}
             <ul className="list-group mb-3">
               {cart.map((item) => (
                 <li
@@ -146,23 +160,19 @@ export default function Cart() {
                       className="img-thumbnail"
                       style={{ width: "50px", marginRight: "10px" }}
                     />
-                    <span>
-                      {item.productId.description || "No description"}
-                    </span>
+                    <span>{item.productId.description || "No description"}</span>
                   </div>
                   <div className="d-flex align-items-center">
                     <input
                       type="number"
+                      className="form-control"
                       value={item.quantity}
                       min="1"
-                      onChange={(e) =>
-                        handleUpdateQuantity(item.productId._id, e.target.value)
-                      }
-                      style={{ width: "60px", marginRight: "10px" }}
+                      style={{ width: "70px", marginRight: "10px" }}
                     />
                     <span>₹{item.productId.Mrp * item.quantity}</span>
                     <button
-                      className="btn btn-danger btn-sm ml-2"
+                      className="btn btn-danger btn-sm ms-2"
                       onClick={() =>
                         handleRemoveFromCart(item.productId._id, item.quantity)
                       }
@@ -177,7 +187,7 @@ export default function Cart() {
               <h4>Total Price: ₹{subtotal}</h4>
               <button
                 className="btn btn-success"
-                onClick={() => (window.location.href = "/checkout")}
+                onClick={handleProceedToPayment}
               >
                 Proceed to Payment
               </button>
@@ -185,6 +195,51 @@ export default function Cart() {
           </>
         )}
       </div>
+
+      {/* Bootstrap Modal */}
+      <div
+        className={`modal fade ${showModal ? "show d-block" : ""}`}
+        style={{ display: showModal ? "block" : "none" }}
+        tabIndex="-1"
+        role="dialog"
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header bg-primary text-white">
+              <h5 className="modal-title">Confirm Payment</h5>
+              <button
+                type="button"
+                className="btn-close btn-close-white"
+                onClick={handleCloseModal}
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body text-center">
+              <p className="fs-5">
+                Are you sure you want to proceed to payment?
+              </p>
+              <p className="fw-bold fs-4">Total: ₹{subtotal}</p>
+            </div>
+            <div className="modal-footer justify-content-center">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleCloseModal}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={pay}
+              >
+                Pay Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Footer />
     </>
   );

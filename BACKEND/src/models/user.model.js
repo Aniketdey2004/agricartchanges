@@ -11,9 +11,6 @@ const userSchema = new Schema({
         required: true,
         unique: true,
     },
-    // coverImage :{
-    //     type : String,
-    // },
     name: {
         type: String,
         required: true,
@@ -44,24 +41,25 @@ const userSchema = new Schema({
         required: true,
         unique: true,
     },
-    // accesstoken:{
-    //     type:String,
-    // },
-    // refreshtoken:{
-    //     type:String,
-    // }
-    
-}, {
+    accesstoken:{
+        type:String,
+        default : null,
+    },
+    refreshtoken:{
+        type:String,
+        default : null,
+    }
+} , {
     timestamps: true
 });
-
+ 
 
 //here we used the pre method of mongoose to encrypt the password before saving info  
 userSchema.pre("save" , async function (next)  {
     if(!this.isModified("password")) return next()// had this if condition not been used then the password would eb encrypted everytime the user changes any of its information
 
-    this.password =await bcrypt.hash(this.password,10)
-    next()
+    this.password = await bcrypt.hash(this.password,10)
+    next();
 })
 
 //mogoose allows us to use any method of our choice and make it one as per needed

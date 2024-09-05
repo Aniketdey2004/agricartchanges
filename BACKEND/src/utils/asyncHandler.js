@@ -10,7 +10,6 @@ const asyncHandler = (requestHandler) => {
                 message : err.message
             })
         }
-
     }
     return requestHandler
 }

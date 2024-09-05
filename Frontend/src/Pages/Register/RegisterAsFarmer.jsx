@@ -12,6 +12,7 @@ export default function RegisterAsFarmer() {
     gender: '',
     address: '',
     pincode: '',
+    state:'',
     email: '',
     phoneNumber: '',
     farmingCertifications: '',
@@ -32,45 +33,61 @@ export default function RegisterAsFarmer() {
   function handleSubmit(event) {
     event.preventDefault(); // Prevent page refresh
     // Add your form submission logic here
-    console.log(farmer);
-    fetch("http://localhost:3026/api/v1/farmers/register", { // Replace with the API endpoint for farmer registration
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+    console.log(farmer)
+    fetch("http://localhost:3026/api/v1/farmers/registerFarmer", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json" // Add this line
       },
-      body: JSON.stringify(farmer),
+        body: JSON.stringify(farmer),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        setMessage({ type: "success", text: data.message });
-
-        setFarmer({
-          username: '',
-          name: '',
-          password: '',
-          gender: '',
-          address: '',
-          pincode: '',
-          email: '',
-          phoneNumber: '',
-          farmingCertifications: '',
-          farmingDetails: '',
-        });
-
-        setTimeout(() => {
-          setMessage({ type: "invisible-msg", text: "Dummy Msg" });
-        }, 5000);
+    .then((response) =>{
+      if (response.status === 409) {
+        setMessage({ type: "error", text: "username or email already exists!" });
+        console.log('Status code from API:', response.status);
+    } else if (response.status === 500) {
+        setMessage({ type: "error", text: "Internal server error" });
+        console.log('Status code from API:', response.status);
+    } 
+     else if (response.status === 201) {
+      console.log('Status code from API:', response.status);
+      setMessage({ type: "success", text: "User registered successfully" });
+      return response.json(); // only process the response JSON if it's successful
+    } else {
+        setMessage({ type: "error", text: "Something went wrong, please try again." });
+        console.log('Status code from API:', response.status);
+    }
+    
+    })
+    .then((data)=>{
+      setTimeout(() => {
+        setMessage({ type: "invisible-msg", text: "Dummy Msg" });
+      }, 5000);
+      setFarmer({
+        username: '',
+        name: '',
+        password: '',
+        gender: '',
+        address: '',
+        pincode: '',
+        state:'',
+        email: '',
+        phoneNumber: '',
+        farmingCertifications: '',
+        farmingDetails: '',
       })
-      .catch((err) => {
+    })
+    .catch((err) => {
         console.log(err);
-      });
-  }
+    });
+    }
 
   return (
     <>
       <Navbar page={"home"} />
-      <div className="container">
+      <div className="container register-form">
         <form onSubmit={handleSubmit}>
+          <h2>Farmer Registration</h2>
           <div className="mb-3">
             <label className="form-label">Name</label>
             <input
@@ -171,6 +188,19 @@ export default function RegisterAsFarmer() {
               name="pincode"
               placeholder="Enter your pincode"
               value={farmer.pincode}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">State</label>
+            <input
+              type="text"
+              onChange={handleInput}
+              className="form-control"
+              id="state"
+              name="state"
+              placeholder="Enter your state"
+              value={farmer.state}
               required
             />
           </div>

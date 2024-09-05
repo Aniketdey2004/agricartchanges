@@ -17,3 +17,8 @@
     color: #333; /* Dark text color */
     border-top: 1px solid #ddd; /* Subtle border between header and body */
 }
+.awarness h1,h2,h3{
+    text-align: center;
+    color: rgb(45, 89, 55);
+    margin-bottom: 10px;
+}

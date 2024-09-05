@@ -38,17 +38,17 @@ export default function contact(){
       <h1>Contact Form</h1>
         <div className="input-box">
           <label>Full Name</label>
-          <input type="text" name="name" className='feild' placeholder='Enter your name' required />
+          <input type="text" name="name" className='field' placeholder='Enter your name' required />
         </div>
         <div className="input-box">
           <label>Email id</label>
-          <input type="email" name="email" className='feild' placeholder='Enter your email' required />
+          <input type="email" name="email" className='field' placeholder='Enter your email' required />
         </div>
         <div className="input-box">
           <label>Message</label>
-          <textarea name="message" id="" className='feild message' placeholder='Enter your message' required></textarea>
+          <textarea name="message" id="" className='field message' placeholder='Enter your message' required></textarea>
         </div>
-        <button type="submit">Send Message</button>
+        <button className='send-msg' type="submit">Send Message</button>
       </form>
     </div>
     <Footer/>

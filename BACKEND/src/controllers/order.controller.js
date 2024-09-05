@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import { Order } from '../models/order.model.js';
 import { Product } from '../models/stock.model.js';
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -7,14 +8,14 @@ const createOrder = async (req, res) => {
   const session = await Order.startSession();
   session.startTransaction();
   try {
-    const { userId, products, address, paymentMethod } = req.body;
+    const { userId, products, address, pincode } = req.body;
     let totalAmount = 0;
     const productUpdates = [];
 
-    // Validate address
-    if (!address || typeof address !== 'object') {
-      throw new Error('Address must be a valid object');
-    }
+    // // Validate address
+    // if (!address || typeof address !== 'object') {
+    //   throw new Error('Address must be a valid object');
+    // }
 
     // Calculate the total amount and check stock availability
     for (const item of products) {
@@ -43,18 +44,20 @@ const createOrder = async (req, res) => {
       userId,
       products,
       totalAmount,
-      address: {
-        street: address.street,
-        city: address.city,
-        state: address.state,
-        zip: address.zip,
-        country: address.country,
-      },
-      paymentDetails: {
-        paymentMethod,
-        status: 'Paid', // Assuming payment is successful
-        transactionId: "dummyTransactionId", // Replace with actual transaction ID if available
-      },
+      address,
+      pincode
+      // address: {
+      //   street: address.street,
+      //   city: address.city,
+      //   state: address.state,
+      //   zip: address.zip,
+      //   country: address.country,
+      // },
+      // paymentDetails: {
+      //   paymentMethod,
+      //   status: 'Paid', // Assuming payment is successful
+      //   transactionId: "dummyTransactionId", // Replace with actual transaction ID if available
+      // },
     });
 
     await order.save({ session });
@@ -73,7 +76,8 @@ const createOrder = async (req, res) => {
 // Get an order by ID
 const getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.orderId).populate('products.productId');
+    const order = await Order.findById(req.params.orderId)
+    //.populate('products.productId');
     if (!order) return ApiResponse.error(res, 404, 'Order not found');
 
     return ApiResponse.success(res, 200, 'Order retrieved successfully', { order });
@@ -125,7 +129,41 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-export { createOrder, getOrderById, updateOrderStatus, deleteOrder };
+// Controller to get all delivery partners
+const getAllOrders = asyncHandler(async (req, res) => {
+  const allOrders = await Order.find();
+
+  if (!allOrders || allOrders.length === 0) {
+      throw new ApiError("No orders found", 404);
+  }
+
+  res.status(200).json({allOrders});
+});
+
+//get order by user id
+// const getCartByUserId = async (req, res) => {
+//   try {
+//     const userId = req.params.userId;
+
+//     const cart = await Cart.findOne({ userId })
+//       .populate('userId', 'username name gender address pincode email phoneNumber')
+//       .populate({
+//         path: 'products.productId',
+//         select: 'photo description Mrp ', // Include photo in the selection
+//       });
+
+//     if (!cart) {
+//       return res.status(404).json({ message: 'Cart not found for this user' });
+//     }
+
+//     res.status(200).json(cart);
+//   } catch (error) {
+//     console.error('Error retrieving cart:', error.message);
+//     res.status(500).json({ message: 'Error retrieving cart', error: error.message });
+//   }
+// };
+
+export { createOrder , getOrderById , updateOrderStatus , deleteOrder , getAllOrders };
 
 
 
@@ -342,7 +380,7 @@ export { createOrder, getOrderById, updateOrderStatus, deleteOrder };
 // //   updateOrderStatus,
 // //   deleteOrder
 // // };
-// 
+// /*
 // import Razorpay from 'razorpay';
 
 // // Initialize Razorpay instance with your credentials

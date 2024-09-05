@@ -29,7 +29,7 @@ export default function LoginFarmer() {
     function handleSubmit(event) {
         event.preventDefault();
         // Add your farmer login logic here
-        fetch("http://localhost:3026/api/v1/farmers/login", { // API endpoint for farmer login
+        fetch("http://localhost:3026/api/v1/farmers/loginFarmer", { // API endpoint for farmer login
             method: "POST",
             body: JSON.stringify(user),
             headers: {
@@ -67,8 +67,9 @@ export default function LoginFarmer() {
     return (
         <>
             <Navbar page={"home"} />
-            <div className="container">
+            <div className="container Login-form">
                 <form onSubmit={handleSubmit}>
+                <h2>Farmer Login</h2>
                     <div className="mb-3">
                         <label className="form-label">Username</label>
                         <input
@@ -108,7 +109,7 @@ export default function LoginFarmer() {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary">Login as Farmer</button>
+                    <button type="submit" className="btn btn-primary login-btn">Login as Farmer</button>
                     <p>
                         Don't have an account? <Link to="/register-farmer">Register as Farmer</Link>
                     </p>

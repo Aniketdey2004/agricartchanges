@@ -8,7 +8,7 @@ export default function Awareness() {
     return (
         <>
             <Navbar page={"awareness"}/>
-            <div className="container my-5">
+            <div className="awarness container my-5">
                 <h1 className="mb-4">Agriculture Data</h1>
                 
                 <section className="mb-5">

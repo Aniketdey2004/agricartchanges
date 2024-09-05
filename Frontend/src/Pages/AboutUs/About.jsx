@@ -26,7 +26,7 @@ const About = () => {
 
         <p>Join us in our journey to revolutionize the way you buy food and support the hardworking farmers who make it all possible. With Agricart, you are not just buying produce; you are making a difference.</p>
       </div>    
-      <h3>Team Members</h3>
+      <h3 className='team-h'>Team Members</h3>
     <div className="team">
         
         <div className="content">

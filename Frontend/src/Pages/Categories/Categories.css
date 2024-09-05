@@ -1,9 +1,4 @@
-.container {
-    max-width: 95%; /* Increase the container width */
-    padding: 0 10px; /* Reduce the padding on both sides */
-}
-
-.row {
-    margin-left: -5px; /* Adjust the left margin */
-    margin-right: -5px; /* Adjust the right margin */
+.cat-name{
+    color: green;
+    text-align: center;
 }

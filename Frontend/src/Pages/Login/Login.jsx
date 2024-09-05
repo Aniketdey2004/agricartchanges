@@ -58,9 +58,8 @@ export default function Login() {
             if (data.accesstoken !== null) {
                 localStorage.setItem("user", JSON.stringify(data));
                 loggedData.setLoggedUser(data);
-                //console.log(loggedData)
+                console.log(loggedData.loggedUser)
                 navigate("/");
-                
             }
         })
         .catch((err) => {
@@ -71,8 +70,9 @@ export default function Login() {
     return (
         <>
             <Navbar page={"home"}/>
-            <div className="container">
+            <div className="container Login-form">
                 <form onSubmit={handleSubmit}>
+                <h2>Customer Login</h2>
                     <div className="mb-3">
                         <label className="form-label">Username</label>
                         <input
@@ -112,7 +112,7 @@ export default function Login() {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary">Login</button>
+                    <button type="submit" className="btn btn-primary login-btn">Login</button>
                     <p>
                         Don't have an account? <Link to="/register">Register</Link>
                     </p>

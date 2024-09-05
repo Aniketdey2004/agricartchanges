@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './Navbar.css';
 import { assets } from '../../assets/assets';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../contexts/UserContext';
 
 const Navbar = (props) => {
   const [menu, setMenu] = useState(props.page);
-
+  const loggedData = useContext(UserContext);
   const categories = [
     { name: 'Fruits', path: '/categories', listName: 'Fruits' },
     { name: 'Vegetables', path: '/categories', listName: 'Vegetables' },
@@ -13,7 +14,11 @@ const Navbar = (props) => {
     { name: 'Grains', path: '/categories', listName: 'Grains' },
     { name: 'Pulses', path: '/categories', listName: 'Pulses' },
   ];
-
+  function logout()
+  {
+        localStorage.removeItem("user");
+        loggedData.setLoggedUser(null);
+  }
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
       <div className="container-fluid">
@@ -97,34 +102,65 @@ const Navbar = (props) => {
             </li>
           </ul>
           <div className="d-flex align-items-center navbar-right">
-            <img src={assets.search_icon} alt="Search Icon" />
             <div className="navbar-searchicon position-relative ms-3">
-              <img src={assets.bag_icon} alt="Bag Icon" />
-              <div className="dot"></div>
+              <Link to="/cart"><img src={assets.bag_icon} alt="Bag Icon" /></Link>
+            <div className="dot"></div>
             </div>
-            <div className="dropdown ms-3">
-              <button
-                className="btn btn-outline-success dropdown-toggle"
-                type="button"
-                id="signinDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Sign in
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="signinDropdown">
-                <li>
-                  <Link className="dropdown-item" to="/login-farmer">
-                    Sign in as Farmer
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/login">
-                    Sign in as Customer
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            {loggedData.loggedUser !== null? (
+              <div className="dropdown ms-3">
+                <button
+                  className="btn btn-outline-success dropdown-toggle"
+                  type="button"
+                  id="accountDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Account
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="accountDropdown">
+                  <li>
+                    <Link className="dropdown-item" to="/profile">
+                      My Account
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => {
+                        logout()
+                        console.log('Logged out');
+                      }}
+                    >
+                      Log Out
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <div className="dropdown ms-3">
+                <button
+                  className="btn btn-outline-success dropdown-toggle"
+                  type="button"
+                  id="signinDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Sign in
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="signinDropdown">
+                  <li>
+                    <Link className="dropdown-item" to="/login-farmer">
+                      Sign in as Farmer
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/login">
+                      Sign in as Customer
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

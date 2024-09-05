@@ -1,36 +1,19 @@
-.category-container {
-    max-width: 1140px; /* Adjusted container width */
-    margin: 0 auto; /* Center the container */
-    padding: 0 15px; /* Decrease the padding on the sides */
-}
-
-.row {
-    margin-top: 30px;
-}
-
-h1 {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
 .card {
-    height: auto;
-    border-radius: 10px;
+    height: auto; /* Keep the card size flexible based on content */
 }
 
 .product-img {
-    height: 250px;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    height: 200px; /* Increase the height to make the image more visible */
+    object-fit: cover; /* Cover the container without stretching the image */
+    border-radius: 8px; /* Optionally add some border-radius for better aesthetics */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to make the image stand out */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    /* No changes needed for responsive design as the description styling is simplified */
 }
 
 .card-body {
-    padding: 15px;
-}
-
-.card-footer {
-    padding: 10px;
+    padding: 10px; /* Add padding inside the card */
 }

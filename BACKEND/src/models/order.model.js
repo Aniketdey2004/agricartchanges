@@ -20,18 +20,26 @@ const orderSchema = new Schema(
       required: true,
     },
     address: {
-      street: { type: String, required: true },
-      city: { type: String, required: true },
-      state: { type: String, required: true },
-      zip: { type: String, required: true },
-      country: { type: String, required: true },
+      type: String,
+      required: true,
     },
-    paymentDetails: {
-      paymentMethod: { type: String, enum: ['UPI', 'Credit Card', 'Debit Card', 'Net Banking','COD'], required: true, default: 'COD' },
-      status: { type: String, default: 'Pending' },
-      transactionId: { type: String, required: true },
-      created_at: { type: Date, default: Date.now },
+    pincode: {
+        type: String,
+        required: true,
     },
+    // address: {
+    //   street: { type: String, required: true },
+    //   city: { type: String, required: true },
+    //   state: { type: String, required: true },
+    //   zip: { type: String, required: true },
+    //   country: { type: String, required: true },
+    // },
+    // paymentDetails: {
+    //   paymentMethod: { type: String, enum: ['UPI', 'Credit Card', 'Debit Card', 'Net Banking','COD'], required: true, default: 'COD' },
+    //   status: { type: String, default: 'Pending' },
+    //   transactionId: { type: String, required: true },
+    //   created_at: { type: Date, default: Date.now },
+    // },
   },
   { timestamps: true }
 );

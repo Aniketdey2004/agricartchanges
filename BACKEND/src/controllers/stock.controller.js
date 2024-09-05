@@ -1,13 +1,26 @@
+// Import the Mongoose library for MongoDB interaction.
 import mongoose from "mongoose";
+
+// Import the Product model, which defines the structure of stock items in the database.
 import { Product } from "../models/stock.model.js";
+
+// Import the asyncHandler utility, which simplifies error handling for asynchronous route handlers.
 import { asyncHandler } from "../utils/asyncHandler.js";
+
+// Import the ApiError utility for creating custom API error responses.
 import { ApiError } from "../utils/ApiError.js";
+
+// Import the ApiResponse utility for creating standardized API response objects.
 import { ApiResponse } from "../utils/ApiResponse.js";
+
 // Controller function to add a new stock item.
 export const addStock = asyncHandler(async (req, res) => {
+    // Destructure the stock item details from the request body.
     const { Mrp, description, units, date_of_produce, growing_practices, place_of_origin, product_id, seller_name, category } = req.body;
 
+    // Create a new Product instance with the provided details.
     const newStock = new Product({
+        // If a file is uploaded, store its path in the `photo` field; otherwise, set it to null.
         photo: req.file ? req.file.path : null,
         Mrp,
         description,
@@ -17,22 +30,24 @@ export const addStock = asyncHandler(async (req, res) => {
         place_of_origin,
         product_id,
         seller_name,
-        category,
+        category
     });
 
+    // Save the new stock item to the database.
     await newStock.save();
 
-    res.status(201).json(newStock); // Directly return the newStock object
+    // Respond with a 201 status code and a success message, along with the saved stock item.
+    return res.status(201).json(new ApiResponse("Stock item added successfully", newStock));
 });
 
-// Controller function to get stock details by either `productId` or `category`.
+// Controller function to get stock details by either productId or category.
 export const getStockDetails = asyncHandler(async (req, res) => {
     const { searchParam } = req.params;
 
     let stockItem;
 
     if (mongoose.isValidObjectId(searchParam)) {
-        // Find by ID if `searchParam` is a valid ObjectId
+        // Find by ID if searchParam is a valid ObjectId
         stockItem = await Product.findById(searchParam);
         if (!stockItem) {
             throw new ApiError("Product not found", 404);
@@ -47,32 +62,45 @@ export const getStockDetails = asyncHandler(async (req, res) => {
 
     res.status(200).json(stockItem); // Directly return the stockItem object(s)
 });
-/*export const getStockDetails = asyncHandler(async (req, res) => {
-    const { searchParam } = req.params;
 
-    let stockItem;
+// // Controller function to get stock details by either `productId` or `category`.
+// export const getStockDetails = asyncHandler(async (req, res) => {
+//     // Extract the `searchParam` from the request parameters.
+//     const { searchParam } = req.params;
 
-    if (mongoose.isValidObjectId(searchParam)) {
-        // Find by ID if searchParam is a valid ObjectId
-        stockItem = await Product.findById(searchParam);
-        if (!stockItem) {
-            //throw new ApiError(404,"Product not found");
-            return res.status(404).json({
-                statusCode : 404,
-                message : "Product Not found!"
-            })
-        }else {
-        // Otherwise, search by category
-        stockItem = await Product.find({ category: searchParam });
-        if (!stockItem || stockItem.length === 0) {
-            throw new ApiError("No products found in this category", 404);
-            }
-        }
-    } 
+//     let stockItem;
 
-    return res.status(200).json(stockItem); // Directly return the stockItem object(s)
-});*/
+//     // Check if `searchParam` is a valid MongoDB ObjectId.
+//     if (mongoose.isValidObjectId(searchParam)) {
+//         // If valid, search for the stock item by `productId` (i.e., using `searchParam` as an ID).
+//         stockItem = await Product.findById(searchParam);
 
+//         // If no product is found, throw a 404 error with a "Product not found" message.
+//         if (!stockItem) {
+//             throw new ApiError("Product not found", 404);
+//         }
+//     } else {
+//         // If `searchParam` is not a valid ObjectId, assume it's a category name and search for products in that category.
+//         stockItem = await Product.find({ category: searchParam });
+
+//         // If no products are found in the given category, throw a 404 error with a "No products found in this category" message.
+//         if (!stockItem || stockItem.length === 0) {
+//             //throw new ApiError("No products found in this category", 404);
+//             return res.status(404,{
+//                 statusCode : 404,
+//                 message : "No products found in this category"
+//             })
+//         }
+//     }
+
+//     // Respond with a 200 status code and the retrieved product(s).
+//     return res.status(200).json(new ApiResponse("Product(s) retrieved successfully", stockItem));
+// });
+
+
+// Other controllers remain the same...
+
+// Get all stock items, optionally filtering by category
 // Controller function to get all stock items, optionally filtering by category.
 export const getAllStock = asyncHandler(async (req, res) => {
     const { category } = req.query;
@@ -89,54 +117,50 @@ export const getAllStock = asyncHandler(async (req, res) => {
 
     return res.status(200).json(allStock); // Directly return the allStock array
 });
-/*export const getAllStock = asyncHandler(async (req, res) => {
-    const { category } = req.query;
+// export const getAllStock = asyncHandler(async (req, res) => {
+//     const { category } = req.query;
 
-    // Construct the query
-    const query = category ? { category } : {};
+//     const query = category ? { category } : {};
 
-    // Fetch products based on the query
-    const allStock = await Product.find(query);
+//     const allStock = await Product.find(query);
 
-    // Check if products are found
-    if (!allStock || allStock.length === 0) {
-        // Use the ApiResponse utility to send a structured error response
-        return res.status(404).json(ApiResponse.error(res, 404, "No products found", null));
-    }
+//     if (!allStock || allStock.length === 0) {
+//         // throw new ApiError("No products found", 404);
+//         return res.status(404,{
+//             statusCode : 404,
+//             message : "No products found"
+//         })
+//     }
 
-    // Return a structured success response with the found products
-    return res.status(200).json(ApiResponse.success(res, 200, "Products fetched successfully", allStock));
-});*/
+//     return res.status(200).json(new ApiResponse("All products retrieved successfully", allStock));
+// });
 
-// Controller function to update a stock item by productId.
+// Update a stock item by productId
 export const updateStock = asyncHandler(async (req, res) => {
-    const { searchParam } = req.params;
+    const { productId } = req.params;
     const updateData = req.body;
 
-    const updatedStock = await Product.findByIdAndUpdate(searchParam, updateData, { new: true, runValidators: true });
+    const updatedStock = await Product.findByIdAndUpdate(productId, updateData, { new: true, runValidators: true });
 
     if (!updatedStock) {
         throw new ApiError("Product not found", 404);
     }
 
-    res.status(200).json(updatedStock); // Directly return the updatedStock object
+    return res.status(200).json(new ApiResponse("Product updated successfully", updatedStock));
 });
 
-// Controller function to delete a stock item by productId.
+// Delete a stock item by productId
 export const deleteStock = asyncHandler(async (req, res) => {
-    const { searchParam } = req.params;
+    const { productId } = req.params;
 
-    const deletedStock = await Product.findByIdAndDelete(searchParam);
+    const deletedStock = await Product.findByIdAndDelete(productId);
 
     if (!deletedStock) {
         throw new ApiError("Product not found", 404);
     }
 
-    res.status(200).json(deletedStock); // Directly return the deletedStock object
+    return res.status(200).json(new ApiResponse("Product deleted successfully", deletedStock));
 });
-
-
-
 /*
 import mongoose, { isValidObjectId } from "mongoose";
 import { Product } from "../models/stock.model.js";

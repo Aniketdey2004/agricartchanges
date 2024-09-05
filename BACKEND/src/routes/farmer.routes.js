@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
     addFarmer,
     loginFarmer,
-    logoutFarmer,
+    //logoutFarmer,
     getFarmerDetails,
     getAllFarmers,
     updateFarmer,
@@ -11,9 +11,9 @@ import {
 
 const router = Router();
 
-router.post('/register', addFarmer);
-router.post('/login', loginFarmer);
-router.post('/logout', logoutFarmer);
+router.post('/registerFarmer', addFarmer);
+router.post('/loginFarmer', loginFarmer);
+//router.post('/logout', logoutFarmer);
 router.get('/', getAllFarmers);
 router.get('/:farmerId', getFarmerDetails);
 router.patch('/:farmerId', updateFarmer);

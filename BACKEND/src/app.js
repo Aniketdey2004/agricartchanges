@@ -1,9 +1,9 @@
 import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+import cors from "cors";//cors: Imports Cross-Origin Resource Sharing middleware. It allows your app to accept requests from different origins (domains).
+import cookieParser from "cookie-parser";//Imports a middleware that parses cookies attached to client requests.
 import { ApiResponse } from "./utils/ApiResponse.js"; // Import your ApiResponse utility
 
-const app = express();
+const app = express();//express app
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN, // Accept requests from a particular URL stored in the CORS_ORIGIN in .env file
