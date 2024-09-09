@@ -53,6 +53,7 @@ export default function LoginFarmer() {
             }, 5000);
         })
         .then((data) => {
+            console.log(data)
             if (data.accesstoken !== null) {
                 localStorage.setItem("user", JSON.stringify(data));
                 loggedData.setLoggedUser(data);

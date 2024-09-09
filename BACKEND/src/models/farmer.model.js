@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const { Schema } = mongoose;
 
 const farmerSchema = new Schema({
-    username: {
+    username : {
         type: String,
         required: true,
         unique: true,

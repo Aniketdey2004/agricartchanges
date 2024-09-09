@@ -11,7 +11,7 @@ const cartSchema = new Schema({
   products: [
     {
       productId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId ,
         ref: 'Product', // Reference to the Stock model
         required: true,
       },

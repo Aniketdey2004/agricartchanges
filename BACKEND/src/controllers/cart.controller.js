@@ -1,4 +1,3 @@
-
 import { Cart } from "../models/cart.model.js";
 import { Product } from "../models/stock.model.js"; // Ensure this is imported correctly
 import { Order } from "../models/order.model.js";

@@ -18,6 +18,7 @@ import RegisterAsFarmer from './Pages/Register/RegisterAsFarmer';
 import Cust from './Components/Private/Cust';
 import Farmer from './Components/Private/Farmer';
 import Entry from './Components/Private/entry';
+import FarmerProfile from './Pages/FarmerProfile/FarmerProfile';
 function App() {
   const [loggedUser,setLoggedUser]=useState(JSON.parse(localStorage.getItem("user")));
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path='/ProductView' element={<Private component={ProductView}/>}/>
           <Route path='/cart' element={<Cust component={Cart}/>}/>
           <Route path='/profile' element={<Cust component={Profile}/>}/>
+          <Route path='/profile-farmer' element={<Farmer component={FarmerProfile}/>}/>
         </Routes>
       </BrowserRouter>
       </UserContext.Provider>

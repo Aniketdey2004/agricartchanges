@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
 import './Navbar.css';
 import { assets } from '../../assets/assets';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 
 const Navbar = (props) => {
   const [menu, setMenu] = useState(props.page);
   const loggedData = useContext(UserContext);
+  const navigate = useNavigate(); // Use navigate to programmatically redirect
   const categories = [
     { name: 'Fruits', path: '/categories', listName: 'Fruits' },
     { name: 'Vegetables', path: '/categories', listName: 'Vegetables' },
@@ -14,11 +15,22 @@ const Navbar = (props) => {
     { name: 'Grains', path: '/categories', listName: 'Grains' },
     { name: 'Pulses', path: '/categories', listName: 'Pulses' },
   ];
-  function logout()
-  {
-        localStorage.removeItem("user");
-        loggedData.setLoggedUser(null);
+
+  function logout() {
+    localStorage.removeItem("user");
+    loggedData.setLoggedUser(null);
   }
+
+  function handleAccountRedirect() {
+    if (loggedData.loggedUser?.loggedInUser) {
+      navigate("/profile"); // Redirect to customer profile
+    } else if (loggedData.loggedUser?.loggedInFarmer) {
+      navigate("/profile-farmer"); // Redirect to farmer profile (if applicable)
+    } else {
+      navigate("/login"); // Default redirect to login
+    }
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
       <div className="container-fluid">
@@ -104,9 +116,9 @@ const Navbar = (props) => {
           <div className="d-flex align-items-center navbar-right">
             <div className="navbar-searchicon position-relative ms-3">
               <Link to="/cart"><img src={assets.bag_icon} alt="Bag Icon" /></Link>
-            <div className="dot"></div>
+              <div className="dot"></div>
             </div>
-            {loggedData.loggedUser !== null? (
+            {loggedData.loggedUser !== null ? (
               <div className="dropdown ms-3">
                 <button
                   className="btn btn-outline-success dropdown-toggle"
@@ -119,15 +131,15 @@ const Navbar = (props) => {
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="accountDropdown">
                   <li>
-                    <Link className="dropdown-item" to="/profile">
+                    <button className="dropdown-item" onClick={handleAccountRedirect}>
                       My Account
-                    </Link>
+                    </button>
                   </li>
                   <li>
                     <button
                       className="dropdown-item"
                       onClick={() => {
-                        logout()
+                        logout();
                         console.log('Logged out');
                       }}
                     >

@@ -2,8 +2,7 @@ import mongoose from "mongoose"
 
 const { Schema } = mongoose;
 
-const subscriptionSchema = new Schema(
-    {
+const subscriptionSchema = new Schema({
         farmerId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Farmer', // Reference to the User model
@@ -53,7 +52,6 @@ const subscriptionSchema = new Schema(
                 userId : {
                 type : mongoose.Schema.Types.ObjectId,
                 ref : "User",
-                required : true ,
                 }
             }
         ]
