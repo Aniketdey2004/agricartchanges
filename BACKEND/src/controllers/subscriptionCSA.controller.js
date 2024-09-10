@@ -57,7 +57,7 @@ export const subscriptionNew = asyncHandler(async (req, res) => {
 export const getAllPlansByFarmerId = async (req, res) => {
     try {
       const farmerId = req.params.farmerId;
-  
+      
       const subscriptionPlans = await CSA_plans.find({ farmerId })
         .populate('farmerId', 'username,name,password,gender , address,pincode,state,email,farmingCertifications,farmingDetails,phoneNumber');
   

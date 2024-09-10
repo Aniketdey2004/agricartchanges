@@ -12,7 +12,7 @@ router.get('/:farmerId', getAllPlansByFarmerId);
 //http://localhost:3026/api/v1/subscriptions/:farmerId
 
 // Route to get all subscriptions by under a farmer
-router.post('/', getAllSubscriptions);
+router.get('/', getAllSubscriptions);
 //http://localhost:3026/api/v1/subscriptions/
 
 // // Route to get all subscriptions by under a farmer
