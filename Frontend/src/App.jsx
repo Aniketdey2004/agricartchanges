@@ -19,6 +19,10 @@ import Cust from './Components/Private/Cust';
 import Farmer from './Components/Private/Farmer';
 import Entry from './Components/Private/entry';
 import FarmerProfile from './Pages/FarmerProfile/FarmerProfile';
+import Managment from './Pages/Managemant/Managment';
+import ProductAdd from './Pages/Product Add/ProductAdd';
+import CsaPlanAdd from './Pages/Product Add/CsaPlanAdd';
+
 function App() {
   const [loggedUser,setLoggedUser]=useState(JSON.parse(localStorage.getItem("user")));
   return (
@@ -39,6 +43,9 @@ function App() {
           <Route path='/cart' element={<Cust component={Cart}/>}/>
           <Route path='/profile' element={<Cust component={Profile}/>}/>
           <Route path='/profile-farmer' element={<Farmer component={FarmerProfile}/>}/>
+          <Route path='/management' element={<Farmer component={Managment}/>}/>
+          <Route path='/product-add' element={<Farmer component={ProductAdd}/>}/>
+          <Route path='/csa-plan-add' element={<Farmer component={CsaPlanAdd}/>}/>
         </Routes>
       </BrowserRouter>
       </UserContext.Provider>

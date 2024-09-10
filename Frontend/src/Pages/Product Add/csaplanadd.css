@@ -1,0 +1,100 @@
+/* Form styling */
+.add-form {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Division styling */
+  .division {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Label styling */
+  .add-form-label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* Input and textarea styling */
+  .add-form-input,
+  .add-form-text,
+  .add-form-options {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+  
+  .add-form-input:focus,
+  .add-form-text:focus,
+  .add-form-options:focus {
+    border-color: #1d7025;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(29, 112, 37, 0.5);
+  }
+  
+  /* Textarea specific styling */
+  .add-form-text {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  /* Select dropdown styling */
+  .add-form-options {
+    appearance: none;
+    background-color: #fff;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="#aaa" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    padding-right: 30px;
+    cursor: pointer;
+  }
+  
+  /* Button styling */
+  .add-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #1d7025;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-button:hover {
+    background-color: #005c09;
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .add-form {
+      padding: 15px;
+    }
+  
+    .add-form-label {
+      font-size: 12px;
+    }
+  
+    .add-button {
+      font-size: 14px;
+    }
+  }
+  
