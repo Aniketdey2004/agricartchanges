@@ -14,6 +14,10 @@ const Managment = () => {
     <button className="csa-add-button">Add CSA Plan</button>
     </Link>
     <h1>Add product form</h1>
+    <Link
+    to="/product-add">
+    <button className="product-add">List your produce</button>
+    </Link>
     <h1>Ready form-mail to customer</h1>
     <Footer/>
     </>
