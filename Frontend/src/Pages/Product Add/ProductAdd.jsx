@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './productadd.css';
+import Navbar from '../../Components/Navbar/Navbar';
+import Footer from '../../Components/Footer/Footer';
 
 export default function ProductAdd() {
   const [formData, setFormData] = useState({
@@ -57,7 +59,7 @@ export default function ProductAdd() {
 
   return (
     <>
-      
+      <Navbar/>
         <form className="add-form" onSubmit={submitForm}>
           <div className='division'>
             <input className="add-form-input " type="file" accept="image/*" onChange={onInputChange} />
@@ -107,6 +109,7 @@ export default function ProductAdd() {
           </div>
           <button className="add-button" type="submit">Submit Form</button>
         </form>
+        <Footer/>
     </>
   );
 }
