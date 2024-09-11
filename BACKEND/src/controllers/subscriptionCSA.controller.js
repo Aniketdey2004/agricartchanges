@@ -90,11 +90,11 @@ export const getAllSubscriptions = asyncHandler(async (req, res) => {
 
 export const subscribeToCSA = asyncHandler(async (req, res) => {
     try {
-        const { planId, username , email, password } = req.body;  // Get login details from the body
+        const { planId, username , email } = req.body;  // Get login details from the body
 
         // Find the user by email (or username) and validate password
         const user = await User.findOne({ $or : [{username} , {email}] });
-        if (!user || !(await user.isPasswordCorrect(password))) { // Assuming you have a password check method
+        if (!user) { // Assuming you have a password check method
             return res.status(401).json({
                 message: "Invalid login credentials",
             });
@@ -107,6 +107,7 @@ export const subscribeToCSA = asyncHandler(async (req, res) => {
                 message: "CSA Plan not found",
             });
         }
+
 
         // Check if the subscriber (user) is already in the subscribers array
         const isAlreadySubscribed = csaPlan.subscribers.some(

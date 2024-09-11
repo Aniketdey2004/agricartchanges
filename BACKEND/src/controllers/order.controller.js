@@ -163,4 +163,38 @@ const getOrderByUserId = async (req, res) => {
   }
 };
 
+//import Farmer from '../models/farmer.model.js';  // Adjust the import based on your project structure
+
+const getOrderByFarmerId = async (req, res) => {
+  try {
+    const { email, username } = req.body;  // Get email and username from request body
+
+    // Find the farmer using email and username
+    const farmer = await Farmer.findOne({ email, username });
+    if (!farmer) {
+      return res.status(404).json({ message: 'Farmer not found' });
+    }
+
+    const farmerId = farmer._id;  // Get farmerId from the found farmer document
+
+    // Find orders by farmerId
+    const orders = await Order.find({ farmerId })  // Query based on farmerId
+      .populate('farmerId', 'name farmName address email phoneNumber')  // Populating farmer details
+      .populate({
+        path: 'products.productId',
+        select: 'photo description Mrp',  // Select photo, description, Mrp for products
+      });
+
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this farmer' });
+    }
+
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error retrieving orders:', error.message);
+    res.status(500).json({ message: 'Error retrieving orders', error: error.message });
+  }
+};
+
+
 export { createOrder , getOrderByUserId , updateOrderStatus , deleteOrder , getAllOrders };
