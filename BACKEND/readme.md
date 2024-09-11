@@ -290,3 +290,55 @@ Output
         }
     }
 }
+
+
+//subscribe to csa as an user
+request - 
+{
+  "planId": "66d9b30abd316780ef8030b9",  // Replace with actual CSA plan ID from your database
+  "email": "Aakashdebnath@gmail.com",           // Replace with an actual user's email from your database
+  "password": "1111"              // Replace with the user's password
+}
+
+if successful expected RESPONSE - {
+    "message": "Subscriber added successfully to the CSA plan!",
+    "csaPlan": {
+        "product_culivated": {
+            "productName": "Organic Tomatoes",
+            "description": "Fresh, locally grown organic tomatoes.",
+            "growingPractices": "Organic farming with sustainable water usage",
+            "category": "Vegetables",
+            "placeOfOrigin": "California, USA",
+            "estimated_units": 100
+        },
+        "_id": "66d9b30abd316780ef8030b9",
+        "farmerId": "66d8a3afb4a4c700bfd2f072",
+        "total_estimated_price": 1500,
+        "initial_price": 500,
+        "estimated_time_of_produce": "3 months",
+        "subscribers": [
+            {
+                "userId": "66d89eb8d1aebbd7a748d24a",
+                "_id": "66d9b30abd316780ef8030ba"
+            },
+            {
+                "userId": "66d89db9d1aebbd7a748d240",
+                "_id": "66d9b30abd316780ef8030bb"
+            },
+            {
+                "userId": "66c02e8250609d2552f9c8c1",
+                "_id": "66d9c4549e9ad6cfd8fdf05a"
+            },
+            {
+                "userId": "66c02d020ac92a8780e5213b",
+                "_id": "66d9c4789e9ad6cfd8fdf060"
+            },
+            {
+                "userId": "66c7590f296f8fd467dafc87",
+                "_id": "66e1a8e0a5db143dfe298c51"
+            }
+        ],
+        "__v": 3
+    }
+}
+

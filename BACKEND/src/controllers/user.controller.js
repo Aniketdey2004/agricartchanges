@@ -181,11 +181,56 @@ const loginUser = asyncHandler(async (req, res) => {
 //     }
 
 //     return res
-//     .status(200)
+//     .status(200) 
 //     .clearCookie("accessToken", options)
 //     .clearCookie("refreshToken", options)
 //     .json(new ApiResponse(200, {}, "User logged Out"))
 // })
+const logOutUser = asyncHandler(async (req, res) => {
+    const { username, email, password } = req.body;
+
+    if (!username && !email) {
+        return res.status(400).json(new ApiResponse(
+            400,
+            null,
+            "Username or email is required!"
+        ));
+    }
+    const user = await User.findOne({
+        $and: [{ username }, { email }]
+    });
+    try {
+        // Unset the refresh token in the database
+        await User.findByIdAndUpdate(
+            user._id,
+            {
+                $unset: {
+                    refreshtoken: 1 // Removes the field from doc
+                }
+            },
+            {
+                new: true
+            }
+        );
+
+        const options = {
+            httpOnly: true,
+            secure: true
+        };
+
+        // Clear only the refresh token cookie
+        return res
+            .status(200)
+            .clearCookie("refreshToken", options)
+            .json({
+                //{},
+                message:"User logged out successfully"});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(new ApiResponse(500, {}, "Internal server error"));
+    }
+});
+
 
 // Controller to get details of a specific user by ID
 const getUserDetails = asyncHandler(async (req, res) => {
@@ -264,7 +309,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 export {
     addUser,
     loginUser,
-    //logOutUser,
+    logOutUser,
     getUserDetails,
     getAllUsers,
     updateUser,

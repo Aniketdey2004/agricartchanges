@@ -7,7 +7,7 @@ import {
     updateUser,
     deleteUser,  // Import the new controller function
     loginUser,
-    //logOutUser
+    logOutUser
 } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from '../middlewares/auth.middleware.js';
@@ -29,9 +29,9 @@ const router = Router();
 
 router.post('/register', addUser);
 router.post("/login",loginUser);
-//router.get("/logout",verifyJWT,logOutUser)
+// router.get("/logout",verifyJWT,logOutUser)
+router.post("/logout",logOutUser)
 // router.post("/login",loginUser);
-// router.post("/logout",verifyJWT,logOutUser)
 router.get('/', getAllUsers);
 router.get('/:userId', getUserDetails);
 router.patch('/:userId', updateUser);

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { subscriptionNew , getAllPlansByFarmerId , getAllSubscriptions} from '../controllers/subscriptionCSA.controller.js';
+import { subscriptionNew , getAllPlansByFarmerId , getAllSubscriptions , subscribeToCSA } from '../controllers/subscriptionCSA.controller.js';
 
 const router = Router();
 
@@ -15,8 +15,8 @@ router.get('/:farmerId', getAllPlansByFarmerId);
 router.get('/', getAllSubscriptions);
 //http://localhost:3026/api/v1/subscriptions/
 
-// // Route to get all subscriptions by under a farmer
-// router.post('/:farmerId', getAllPlansByFarmerId);
-// //http://localhost:3026/api/v1/subscriptions/addSubscription
+// Route to get all subscriptions by under a farmer
+router.post('/subscribeToCSA', subscribeToCSA);
+//http://localhost:3026/api/v1/subscriptions/subscribeToCSA
 
 export default router;
