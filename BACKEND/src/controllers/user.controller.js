@@ -187,7 +187,7 @@ const loginUser = asyncHandler(async (req, res) => {
 //     .json(new ApiResponse(200, {}, "User logged Out"))
 // })
 const logOutUser = asyncHandler(async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email } = req.body;
 
     if (!username && !email) {
         return res.status(400).json(new ApiResponse(
