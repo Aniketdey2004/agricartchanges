@@ -8,6 +8,7 @@ const Navbar = (props) => {
   const [menu, setMenu] = useState(props.page);
   const loggedData = useContext(UserContext);
   const navigate = useNavigate(); // Use navigate to programmatically redirect
+
   const categories = [
     { name: 'Fruits', path: '/categories', listName: 'Fruits' },
     { name: 'Vegetables', path: '/categories', listName: 'Vegetables' },
@@ -16,18 +17,42 @@ const Navbar = (props) => {
     { name: 'Pulses', path: '/categories', listName: 'Pulses' },
   ];
 
+  // Check if loggedData and loggedData.loggedUser exist before accessing them
+  const user = loggedData.loggedUser?.loggedInUser
+    ? {
+        username: loggedData.loggedUser.loggedInUser.username,
+        email: loggedData.loggedUser.loggedInUser.email,
+      }
+    : null;
+
   function logout() {
-    localStorage.removeItem("user");
-    loggedData.setLoggedUser(null);
+    if (user) {
+      localStorage.removeItem('user');
+      loggedData.setLoggedUser(null);
+      fetch(`http://localhost:3026/api/v1/users/logout`, {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   function handleAccountRedirect() {
     if (loggedData.loggedUser?.loggedInUser) {
-      navigate("/profile"); // Redirect to customer profile
+      navigate('/profile'); // Redirect to customer profile
     } else if (loggedData.loggedUser?.loggedInFarmer) {
-      navigate("/profile-farmer"); // Redirect to farmer profile (if applicable)
+      navigate('/profile-farmer'); // Redirect to farmer profile (if applicable)
     } else {
-      navigate("/login"); // Default redirect to login
+      navigate('/login'); // Default redirect to login
     }
   }
 

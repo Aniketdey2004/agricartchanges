@@ -12,8 +12,7 @@
 .imgcontainer img {
     height: 100vh;
     width: 95%;
-    object-fit: cover;
-    padding-left: 45px; /* Ensure the image covers the area without distortion */
+    object-fit: cover; /* Ensure the image covers the area without distortion */
 }
 
 .aboutcontents {
