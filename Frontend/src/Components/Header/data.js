@@ -25,7 +25,7 @@ export const responsive = {
     {
       id: 1,
       imageurl:
-     "https://plus.unsplash.com/premium_photo-1661763169567-9995f2c67aee?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+     "https://www.theindiaforum.in/sites/default/files/field/image/2022/06/21/ramkumar-radhakrishnan-wikimedia-1622193304-1622193304.jpeg",
       name: "FRESH MARKET WE'LL DELIVER EVERYTHING YOU NEED",
       price: "Harvested with Care, Delivered with Trust – Empowering Farmers, Serving Freshness",
       description: "SHOP NOW",
@@ -33,7 +33,7 @@ export const responsive = {
     {
       id: 2,
       imageurl:
-        "https://images.unsplash.com/photo-1471532027614-154d124ccf57?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://media.istockphoto.com/id/1301128630/photo/young-handsome-agronomist-and-farmer-inspecting-cotton-field-with-tablet.jpg?s=2048x2048&w=is&k=20&c=oy3yl1KRfraVecdpcJSR4A2RSY83WvDyli9ATvhXxss=",
       name: "Subscribe to our plan for the best fresh produce only for you",
       price: "Harvested with Care, Delivered with Trust – Empowering Farmers, Serving Freshness",
       description: "SUBSCRIBE",
