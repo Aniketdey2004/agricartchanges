@@ -25,7 +25,11 @@ import sustainable from './sustainable.jpg'
 import waste from './wastemanagement.jpg'
 import aniket from './Aniket.jpeg'
 import anubrata from './Anubrata.jpeg'
-import aboutus from './aboutus.jpg'
+import aboutus from './aboutus.jpeg'
+import e1 from './event1.jpg'
+import e2 from './event2.jpg'
+import e3 from './event3.jpg'
+import e4 from './event4.png'
 export const assets={
     bag_icon,
     search_icon,
@@ -54,5 +58,9 @@ export const assets={
     waste,
     aniket,
     anubrata,
-    aboutus
+    aboutus,
+    e1,
+    e2,
+    e3,
+    e4
 };

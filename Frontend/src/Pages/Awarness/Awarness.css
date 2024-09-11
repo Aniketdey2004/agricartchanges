@@ -22,3 +22,26 @@
     color: rgb(45, 89, 55);
     margin-bottom: 10px;
 }
+/* Carousel container styles */
+.carousel-container {
+    margin: 20px auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 1200px; /* Optional: Set a maximum width for larger screens */
+    height: auto; /* Ensure it adjusts based on content */
+    text-align: center;
+}
+
+/* Carousel item styles */
+.carousel-item {
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    padding: 0 10px;
+}
+
+.carousel-item img {
+    max-width: 100%;
+    height: auto; /* Adjust height automatically to maintain aspect ratio */
+    border-radius: 8px; 
+}
