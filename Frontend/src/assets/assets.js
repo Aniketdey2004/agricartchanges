@@ -23,6 +23,9 @@ import localagri from './localagriculture.jpg'
 import riselocal from './localagririse.jpg'
 import sustainable from './sustainable.jpg'
 import waste from './wastemanagement.jpg'
+import aniket from './Aniket.jpeg'
+import anubrata from './Anubrata.jpeg'
+import aboutus from './aboutus.jpg'
 export const assets={
     bag_icon,
     search_icon,
@@ -48,5 +51,8 @@ export const assets={
     localagri,
     riselocal,
     sustainable,
-    waste
+    waste,
+    aniket,
+    anubrata,
+    aboutus
 };
