@@ -99,6 +99,78 @@
     box-shadow: 0 8px 16px rgba(0, 100, 0, 0.2);
 }
 
+/* Custom Pop-up */
+.c-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.c-popup {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0, 128, 0, 0.1);
+    text-align: center;
+}
+
+.c-popup h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #2b7a0b;
+}
+
+.c-popup p {
+    font-size: 1.2rem;
+    color: #455a38;
+    margin-bottom: 30px;
+}
+
+/* Popup Buttons */
+.c-popup-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.c-cancel-btn,
+.c-pay-now-btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.c-cancel-btn {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.c-cancel-btn:hover {
+    background-color: #c62828;
+    box-shadow: 0 8px 16px rgba(200, 0, 0, 0.2);
+}
+
+.c-pay-now-btn {
+    background-color: #43a047;
+    color: white;
+}
+
+.c-pay-now-btn:hover {
+    background-color: #388e3c;
+    box-shadow: 0 8px 16px rgba(0, 100, 0, 0.2);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .c-product-name {
@@ -110,12 +182,35 @@
     }
 
     .c-details-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Stack cards vertically on smaller screens */
         gap: 20px;
     }
 
     .c-subscribe-btn {
-        width: 100%;
-        padding: 15px;
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    .c-popup {
+        padding: 20px;
+    }
+
+    .c-popup h2 {
+        font-size: 1.5rem;
+    }
+
+    .c-popup p {
+        font-size: 1rem;
+    }
+
+    .c-cancel-btn,
+    .c-pay-now-btn {
+        padding: 8px 16px;
+        font-size: 1rem;
+    }
+
+    .c-popup-buttons {
+        flex-direction: column;
+        gap: 15px;
     }
 }

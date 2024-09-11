@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import './CSAView.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import { useLocation } from 'react-router-dom';
+import { UserContext } from '../../contexts/UserContext';
 
 export default function CSAView() {
     const location = useLocation();
     const details = location.state?.details;
+    const loggedData = useContext(UserContext);
+    const [showPopup, setShowPopup] = useState(false);
+
+    const subscriber = {
+        planId: details._id,
+        email: loggedData.loggedUser.loggedInUser.email,
+    };
+
+    const handleClosePopup = () => setShowPopup(false);
+    const handleShowPopup = () => setShowPopup(true);
+
+    function addSubscriber() {
+        console.log(subscriber);
+        fetch(`http://localhost:3026/api/v1/subscriptions/subscribeToCSA`, {
+            method: "POST",
+            body: JSON.stringify(subscriber),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                handleClosePopup(); // Close the popup after subscribing
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
     return (
         <>
@@ -43,7 +73,25 @@ export default function CSAView() {
                         </div>
                     </div>
 
-                    <button className="c-subscribe-btn">Subscribe Now</button>
+                    <button className="c-subscribe-btn" onClick={handleShowPopup}>Subscribe Now</button>
+
+                    {/* Custom Pop-up for Pay Now and Cancel */}
+                    {showPopup && (
+                        <div className="c-popup-overlay">
+                            <div className="c-popup">
+                                <h2>Proceed to Payment</h2>
+                                <p>Are you sure you want to subscribe to this CSA?</p>
+                                <div className="c-popup-buttons">
+                                    <button className="c-cancel-btn" onClick={handleClosePopup}>
+                                        Cancel
+                                    </button>
+                                    <button className="c-pay-now-btn" onClick={addSubscriber}>
+                                        Pay Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
             <Footer />
