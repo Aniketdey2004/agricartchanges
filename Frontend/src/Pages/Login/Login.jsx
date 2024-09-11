@@ -19,7 +19,6 @@ export default function Login() {
         email: '',
         password: ''
     });
-
     function handleInput(event) {
       setUser((prevDetails) => {
         return { ...prevDetails, [event.target.name]: event.target.value };
@@ -58,7 +57,6 @@ export default function Login() {
             if (data.accesstoken !== null) {
                 localStorage.setItem("user", JSON.stringify(data));
                 loggedData.setLoggedUser(data);
-                //console.log(loggedData.loggedUser)
                 navigate("/");
             }
         })
