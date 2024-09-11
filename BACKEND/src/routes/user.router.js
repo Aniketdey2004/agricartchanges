@@ -27,15 +27,15 @@ const router = Router();
 
 //router.route("/login").post(login); ////http://localhost:8000/api/v1/users/login
 
-router.post('/register', addUser);
-router.post("/login",loginUser);
+router.post('/register', addUser);//http://localhost:3026/api/v1/users/register
+router.post("/login",loginUser);//http://localhost:3026/api/v1/users/login
 // router.get("/logout",verifyJWT,logOutUser)
-router.post("/logout",logOutUser)
+router.post("/logout",logOutUser)//http://localhost:3026/api/v1/users/logout
 // router.post("/login",loginUser);
-router.get('/', getAllUsers);
-router.get('/:userId', getUserDetails);
-router.patch('/:userId', updateUser);
-router.get('/:userId', deleteUser);
+router.get('/', getAllUsers);//http://localhost:3026/api/v1/users
+router.get('/:userId', getUserDetails);//http://localhost:3026/api/v1/users/:userId
+router.patch('/:userId', updateUser);//http://localhost:3026/api/v1/users/:userId
+router.get('/:userId', deleteUser);//http://localhost:3026/api/v1/users/:userId
 
 
 //exporting the router
