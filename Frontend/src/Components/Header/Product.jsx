@@ -11,7 +11,15 @@ const Product = (props) => {
     
     <p className="price">{props.price}</p>
     
-      <Link to="/categories" state={{ categories: 'Fruits' }}><button className='carousel-btn'>{props.description}</button></Link>
+    {props.description === "SUBSCRIBE" ? (
+          <Link to="/csa-listing">
+            <button className='carousel-btn'>{props.description}</button>
+          </Link>
+        ) : (
+          <Link to="/categories" state={{ categories: 'Fruits' }}>
+            <button className='carousel-btn'>{props.description}</button>
+          </Link>
+        )}
     
     </div>
   </div>
