@@ -16,7 +16,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 // Controller function to add a new stock item.
 export const addStock = asyncHandler(async (req, res) => {
     // Destructure the stock item details from the request body.
-    const { Mrp, description, units, date_of_produce, growing_practices, place_of_origin, product_id, seller_name, category } = req.body;
+    const { Mrp, description, units, date_of_produce, growing_practices, place_of_origin, product_id, seller_name, sellerDetails ,  category } = req.body;
 
     // Create a new Product instance with the provided details.
     const newStock = new Product({
@@ -30,6 +30,7 @@ export const addStock = asyncHandler(async (req, res) => {
         place_of_origin,
         product_id,
         seller_name,
+        sellerDetails,
         category
     });
 
@@ -37,7 +38,9 @@ export const addStock = asyncHandler(async (req, res) => {
     await newStock.save();
 
     // Respond with a 201 status code and a success message, along with the saved stock item.
-    return res.status(201).json(new ApiResponse("Stock item added successfully", newStock));
+    return res.status(201).json({
+        message : "Stock item added successfully", 
+        newStock});
 });
 
 // Controller function to get stock details by either productId or category.
@@ -51,6 +54,9 @@ export const getStockDetails = asyncHandler(async (req, res) => {
         stockItem = await Product.findById(searchParam);
         if (!stockItem) {
             throw new ApiError("Product not found", 404);
+            return res.status(404).json({
+                message : "Product not found", 
+            });
         }
     } else {
         // Otherwise, search by category

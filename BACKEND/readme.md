@@ -342,3 +342,105 @@ if successful expected RESPONSE - {
     }
 }
 
+//get all orders by farmer id
+request to be sent 
+{
+  "email": "admin@gmail.com",
+  "username": "Admin"
+}
+response received by frontend
+[
+    {
+        "_id": "66e1cd953de2f4523761fcce",
+        "userId": "66c695058ce53fff572636c1",
+        "products": [
+            {
+                "productId": {
+                    "_id": "66e1c3597724d60609f3295e",
+                    "photo": null,
+                    "Mrp": 100,
+                    "description": "Fresh and organic apples",
+                    "units": 49,
+                    "date_of_produce": "2024-09-01",
+                    "growing_practices": "Organic",
+                    "place_of_origin": "Hilly region",
+                    "product_id": "apple-1234",
+                    "seller_name": "John Doe",
+                    "sellerDetails": {
+                        "_id": "66dfc63f8111f10d68e0636d",
+                        "name": "Admin",
+                        "address": "Admin",
+                        "email": "admin@gmail.com",
+                        "phoneNumber": "0000"
+                    },
+                    "category": "Fruits",
+                    "createdAt": "2024-09-11T16:20:42.022Z",
+                    "updatedAt": "2024-09-11T17:04:21.750Z",
+                    "__v": 0
+                },
+                "quantity": 1,
+                "_id": "66e1cd953de2f4523761fccf"
+            },
+            {
+                "productId": {
+                    "_id": "66e1c405e642f693eb044c86",
+                    "photo": null,
+                    "Mrp": 500,
+                    "description": "Fresh and organic onions",
+                    "units": 149,
+                    "date_of_produce": "2024-09-01",
+                    "growing_practices": "Organic",
+                    "place_of_origin": "land",
+                    "product_id": "onion-1234",
+                    "seller_name": "John Doe",
+                    "sellerDetails": {
+                        "_id": "66dfc63f8111f10d68e0636d",
+                        "name": "Admin",
+                        "address": "Admin",
+                        "email": "admin@gmail.com",
+                        "phoneNumber": "0000"
+                    },
+                    "category": "Vegetables",
+                    "createdAt": "2024-09-11T16:23:33.967Z",
+                    "updatedAt": "2024-09-11T17:04:21.750Z",
+                    "__v": 0
+                },
+                "quantity": 1,
+                "_id": "66e1cd953de2f4523761fcd0"
+            },
+            {
+                "productId": {
+                    "_id": "66e1cc6c3de2f4523761fcc9",
+                    "photo": null,
+                    "Mrp": 500,
+                    "description": "Fresh and organic pineapples",
+                    "units": 122,
+                    "date_of_produce": "2024-09-01",
+                    "growing_practices": "Organic",
+                    "place_of_origin": "land",
+                    "product_id": "pineapples-1456",
+                    "seller_name": "John Doe",
+                    "sellerDetails": {
+                        "_id": "66dfc63f8111f10d68e0636d",
+                        "name": "Admin",
+                        "address": "Admin",
+                        "email": "admin@gmail.com",
+                        "phoneNumber": "0000"
+                    },
+                    "category": "Fruits",
+                    "createdAt": "2024-09-11T16:59:24.923Z",
+                    "updatedAt": "2024-09-11T17:04:21.750Z",
+                    "__v": 0
+                },
+                "quantity": 1,
+                "_id": "66e1cd953de2f4523761fcd1"
+            }
+        ],
+        "totalAmount": 1100,
+        "address": "123 Farm Road, Green Valley",
+        "pincode": "67890940",
+        "createdAt": "2024-09-11T17:04:21.704Z",
+        "updatedAt": "2024-09-11T17:04:21.704Z",
+        "__v": 0
+    }
+]

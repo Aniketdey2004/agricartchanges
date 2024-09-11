@@ -163,13 +163,43 @@ const getOrderByUserId = async (req, res) => {
   }
 };
 
-//import Farmer from '../models/farmer.model.js';  // Adjust the import based on your project structure
+import { Farmer } from '../models/farmer.model.js';  // Adjust the import based on your project structure
 
-const getOrderByFarmerId = async (req, res) => {
+// const getOrderByFarmerId = async (req, res) => {
+//   try {
+//     const { email, username } = req.body;  // Get email and username from request body
+
+//     // Find the farmer using email and username
+//     const farmer = await Farmer.findOne({ email, username });
+//     if (!farmer) {
+//       return res.status(404).json({ message: 'Farmer not found' });
+//     }
+
+//     const farmerId = farmer._id;  // Get farmerId from the found farmer document
+
+//     // Find orders by farmerId
+//     const orders = await Order.find({ farmerId })  // Query based on farmerId
+//       .populate('farmerId', 'name farmName address email phoneNumber')  // Populating farmer details
+//       .populate({
+//         path: 'products.productId',
+//         select: 'photo description Mrp',  // Select photo, description, Mrp for products
+//       });
+
+//     if (orders.length === 0) {
+//       return res.status(404).json({ message: 'No orders found for this farmer' });
+//     }
+
+//     return res.status(200).json(orders);
+//   } catch (error) {
+//     console.error('Error retrieving orders:', error.message);
+//     res.status(500).json({ message: 'Error retrieving orders', error: error.message });
+//   }
+// };
+export const getOrdersByFarmerId = async (req, res) => {
   try {
     const { email, username } = req.body;  // Get email and username from request body
 
-    // Find the farmer using email and username
+    // Step 1: Find the farmer using email and username
     const farmer = await Farmer.findOne({ email, username });
     if (!farmer) {
       return res.status(404).json({ message: 'Farmer not found' });
@@ -177,16 +207,27 @@ const getOrderByFarmerId = async (req, res) => {
 
     const farmerId = farmer._id;  // Get farmerId from the found farmer document
 
-    // Find orders by farmerId
-    const orders = await Order.find({ farmerId })  // Query based on farmerId
-      .populate('farmerId', 'name farmName address email phoneNumber')  // Populating farmer details
+    // Step 2: Find all products listed by this farmer
+    const products = await Product.find({ sellerDetails: farmerId });
+    if (products.length === 0) {
+      return res.status(404).json({ message: 'No products found for this farmer' });
+    }
+
+    const productIds = products.map(product => product._id);  // Extract product IDs
+
+    // Step 3: Find all orders containing these products
+    const orders = await Order.find({ 'products.productId': { $in: productIds } })
+      .populate('products.productId', 'photo description Mrp')  // Populate product details
       .populate({
         path: 'products.productId',
-        select: 'photo description Mrp',  // Select photo, description, Mrp for products
+        populate: {
+          path: 'sellerDetails',
+          select: 'name farmName address email phoneNumber'
+        }
       });
 
     if (orders.length === 0) {
-      return res.status(404).json({ message: 'No orders found for this farmer' });
+      return res.status(404).json({ message: 'No orders found for these products' });
     }
 
     return res.status(200).json(orders);
@@ -195,6 +236,7 @@ const getOrderByFarmerId = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving orders', error: error.message });
   }
 };
+
 
 
 export { createOrder , getOrderByUserId , updateOrderStatus , deleteOrder , getAllOrders };

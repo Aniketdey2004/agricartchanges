@@ -1,27 +1,31 @@
 import { Router } from 'express';
-import { createOrder, getOrderByUserId, updateOrderStatus, deleteOrder , getAllOrders } from '../controllers/order.controller.js';
+import { createOrder, getOrderByUserId, updateOrderStatus, deleteOrder , getAllOrders ,getOrdersByFarmerId } from '../controllers/order.controller.js';
 
 const router = Router();
 
 // Route to create a new order
-router.post('/order', createOrder); // Create a new order 
+router.post('/order', createOrder); 
 //http://localhost:3026/api/v1/orders/order
 
 // Route to get an order by its ID
-router.get('/order/:userId', getOrderByUserId); // Get a specific order
+router.get('/order/:userId', getOrderByUserId); 
 //http://localhost:3026/api/v1/orders/order/:userId
 
 // Route to update the order status
-router.put('/order/status', updateOrderStatus); // Update order status
+router.put('/order/status', updateOrderStatus); 
 //http://localhost:3026/api/v1/orders/order/status
 
 // Route to delete an order
-router.delete('/order/:orderId', deleteOrder); // Delete an order
+router.delete('/order/:orderId', deleteOrder); 
 //http://localhost:3026/api/v1/orders/order/:orderId
 
 // Route to delete an order
-router.get('/', getAllOrders); // Delete an order
+router.get('/', getAllOrders); 
+//http://localhost:3026/api/v1/orders
 
+// Route to get all orders for a farmer
+router.get('/farmer', getOrdersByFarmerId);
+//http://localhost:3026/api/v1/orders/order/:farmerId
 export default router;
 
 
