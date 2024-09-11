@@ -1,0 +1,121 @@
+/* Main Wrapper */
+.c-wrapper {
+    background-color: #e7f5e5; /* Light green background */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+/* Container */
+.c-container {
+    background-color: #fff;
+    padding: 40px;
+    max-width: 1000px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 128, 0, 0.1);
+    text-align: center;
+    position: relative;
+}
+
+/* Product Name */
+.c-product-name {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #2b7a0b; /* Dark green for product name */
+    margin-bottom: 15px;
+    text-transform: capitalize;
+    letter-spacing: 1.5px;
+}
+
+/* Category */
+.c-category {
+    font-size: 1.5rem;
+    color: #3f6d2b; /* Slightly darker green */
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* Grid Layout for Details */
+.c-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* Detail Card */
+.c-detail-card {
+    background-color: #f0f9f0; /* Light green shade */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 100, 0, 0.1);
+    border-left: 4px solid #4caf50; /* Stronger green for the left border */
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.c-detail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 100, 0, 0.15);
+}
+
+/* Card Heading */
+.c-detail-card h4 {
+    font-size: 1.4rem;
+    color: #2e7d32; /* Dark green */
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Card Text */
+.c-detail-card p {
+    font-size: 1.2rem;
+    color: #455a38; /* Muted green for text */
+    line-height: 1.6;
+}
+
+/* Subscribe Button */
+.c-subscribe-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 15px 40px;
+    background-color: #43a047; /* Vibrant green */
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.c-subscribe-btn:hover {
+    background-color: #388e3c; /* Darker green on hover */
+    box-shadow: 0 8px 16px rgba(0, 100, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .c-product-name {
+        font-size: 2.5rem;
+    }
+
+    .c-category {
+        font-size: 1.3rem;
+    }
+
+    .c-details-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .c-subscribe-btn {
+        width: 100%;
+        padding: 15px;
+    }
+}

@@ -6,7 +6,7 @@ const Csa = () => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-      navigate('/csa'); // Adjust the route as per your routing configuration
+      navigate('/csa-listing'); // Adjust the route as per your routing configuration
     };
   return (
     <div className="csa-container">

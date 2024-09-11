@@ -22,7 +22,8 @@ import FarmerProfile from './Pages/FarmerProfile/FarmerProfile';
 import Managment from './Pages/Managemant/Managment';
 import ProductAdd from './Pages/Product Add/ProductAdd';
 import CsaPlanAdd from './Pages/Product Add/CsaPlanAdd';
-
+import CSA from './Pages/CsaPlan/CSA';
+import CSAView from './Pages/CSAView/CSAView';
 function App() {
   const [loggedUser,setLoggedUser]=useState(JSON.parse(localStorage.getItem("user")));
   return (
@@ -46,6 +47,8 @@ function App() {
           <Route path='/management' element={<Farmer component={Managment}/>}/>
           <Route path='/product-add' element={<Farmer component={ProductAdd}/>}/>
           <Route path='/csa-plan-add' element={<Farmer component={CsaPlanAdd}/>}/>
+          <Route path='/csa-listing' element={<Private component={CSA}/>}/>
+          <Route path='/SubscriptionView' element={<Private component={CSAView}/>}/>
         </Routes>
       </BrowserRouter>
       </UserContext.Provider>

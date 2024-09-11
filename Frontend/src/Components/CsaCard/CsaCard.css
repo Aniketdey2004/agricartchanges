@@ -1,0 +1,55 @@
+/* CsaCard.css */
+.csa-card {
+    background-color: #e8f5e9; /* Light green background */
+    border: 1px solid #4caf50; /* Green border */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 128, 0, 0.2); /* Subtle green shadow */
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.csa-card:hover {
+    transform: translateY(-5px); /* Lift the card on hover */
+}
+
+.csa-card-body {
+    padding: 15px;
+    color: #2e7d32; /* Dark green text */
+}
+
+.csa-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #388e3c; /* Medium green for title */
+}
+
+.csa-card-text {
+    margin-bottom: 10px;
+    color: #1b5e20; /* Darker green for text */
+}
+
+.csa-card-footer {
+    background-color: #4caf50; /* Green footer */
+    border-top: 1px solid #388e3c;
+}
+
+.csa-view {
+    background-color: #2e7d32; /* Dark green button */
+    border-color: #1b5e20;
+}
+
+.csa-view:hover {
+    background-color: #388e3c; /* Medium green on hover */
+    border-color: #2e7d32;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .csa-card-body {
+        padding: 10px;
+    }
+
+    .csa-card-title {
+        font-size: 1.25rem;
+    }
+}
