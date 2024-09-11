@@ -41,6 +41,11 @@ const stockSchema = new Schema(
       type: String,
       required: true,
     },
+    sellerDetails : {
+      type : mongoose.Types.ObjectId,
+      ref : "Farmer",
+      required : true
+    },
     category: {
       type: String,
       enum: ['Grains', 'Pulses', 'Spices', 'Fruits', 'Vegetables'],
