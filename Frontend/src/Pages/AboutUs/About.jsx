@@ -11,7 +11,7 @@ const About = () => {
     <div className='about'>
       <h1>About Our Market</h1>
       <div className="imgcontainer">
-        <img src={assets.about} alt="" />
+        <img src={assets.aboutus} alt="" />
       </div>
       <div className="aboutcontents">
         <p>Welcome to Agricart, your trusted partner in bringing fresh, naturally produced food items straight from the farm to your doorstep. Our mission is to empower farmers by providing them with fair prices for their produce while minimizing costs for consumers by eliminating middlemen.</p>
@@ -34,7 +34,7 @@ const About = () => {
         <h4>Debargha Samanta</h4>
         </div>
         <div className="content">
-        <img src={assets.deb} alt="" />
+        <img src={assets.aniket} alt="" />
         <h4>Aniket Dey</h4>
         </div>
         <div className="content">
@@ -42,7 +42,7 @@ const About = () => {
         <h4>Soumashree Das</h4>
         </div>
         <div className="content">
-        <img src={assets.deb} alt="" />
+        <img src={assets.anubrata} alt="" />
         <h4>Anubrata Mondal</h4>
         </div>
         <div className="content">
