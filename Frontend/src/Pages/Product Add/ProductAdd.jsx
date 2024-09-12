@@ -1,14 +1,13 @@
-import React, { useState, useContext } from 'react';
+import { useState, useRef } from 'react';
+import Webcam from 'react-webcam'; // Import the webcam package
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
+import { faCamera } from '@fortawesome/free-solid-svg-icons'; // Import the camera icon
 import './productadd.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import Footer from '../../Components/Footer/Footer';
-import { UserContext } from '../../contexts/UserContext';
 
 export default function ProductAdd() {
-  const loggedData = useContext(UserContext);
-
   const [formData, setFormData] = useState({
-    photo: "",
     Mrp: "",
     description: "",
     units: "",
@@ -17,17 +16,20 @@ export default function ProductAdd() {
     place_of_origin: "",
     product_id: "",
     seller_name: "",
-    category: "", 
-    sellerDetails: loggedData.loggedUser.loggedInFarmer._id // Use loggedData for sellerDetails
+    category: "",
   });
-
   const [image, setImage] = useState(null);
+  const [isCameraMode, setIsCameraMode] = useState(false); // State to toggle between camera and file input
+
+  const webcamRef = useRef(null); // Ref to the webcam component
 
   function submitForm(event) {
     event.preventDefault();
     
     const data = new FormData();
-    data.append("photo", image); // Add the image file to the form data
+    if (image) {
+      data.append("photo", image); // Add the image file to the form data
+    }
     data.append("Mrp", formData.Mrp);
     data.append("description", formData.description);
     data.append("units", formData.units);
@@ -36,8 +38,7 @@ export default function ProductAdd() {
     data.append("place_of_origin", formData.place_of_origin);
     data.append("product_id", formData.product_id);
     data.append("seller_name", formData.seller_name);
-    data.append("category", formData.category);
-    data.append("sellerDetails", formData.sellerDetails); // Append sellerDetails to the form data
+    data.append("category", formData.category); // Append the category to the form data
 
     fetch("http://localhost:3026/api/v1/stocks/", {
       method: "POST",
@@ -63,38 +64,54 @@ export default function ProductAdd() {
     }));
   }
 
+  function capture() {
+    const imageSrc = webcamRef.current.getScreenshot();
+    if (imageSrc) {
+      fetch(imageSrc)
+        .then((res) => res.blob())
+        .then((blob) => {
+          setImage(blob); // Set the captured image to state as a Blob
+        });
+    }
+  }
+
+  function toggleMode() {
+    setIsCameraMode(!isCameraMode); // Toggle between camera and file input mode
+  }
+
   return (
     <>
       <Navbar />
       <form className="add-form" onSubmit={submitForm}>
         <div className='division'>
-          <input
-            className="add-form-input"
-            type="file"
-            accept="image/*"
-            onChange={onInputChange}
-          />
+          <label className='add-form-label'>Upload Photo:</label>
+          <div className="input-container">
+            <button type="button" className="toggle-mode-btn" onClick={toggleMode}>
+              <FontAwesomeIcon icon={faCamera} size="lg" />
+            </button>
+            {isCameraMode ? (
+              <div className="camera-container">
+                <Webcam
+                  audio={false}
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
+                  width="100%"
+                />
+                <button type="button" onClick={capture}>Capture Photo</button>
+                {image && <img src={URL.createObjectURL(image)} alt="Captured" />}
+              </div>
+            ) : (
+              <input className="add-form-input" type="file" accept="image/*" onChange={onInputChange} />
+            )}
+          </div>
         </div>
         <div className='division'>
           <label className='add-form-label'>MRP:</label>
-          <input
-            type="number"
-            className="add-form-input mrp-input"
-            onChange={handleInput}
-            name="Mrp"
-            value={formData.Mrp}
-            required
-          />
+          <input type="number" className="add-form-input mrp-input" onChange={handleInput} name="Mrp" required />
         </div>
         <div className='division'>
           <label className='add-form-label'>Category:</label>
-          <select
-            className="add-form-options"
-            name="category"
-            onChange={handleInput}
-            value={formData.category}
-            required
-          >
+          <select className="add-form-options" name="category" onChange={handleInput} required>
             <option value="">Select a Category</option>
             <option value="Vegetables">Vegetables</option>
             <option value="Grains">Grains</option>
@@ -105,82 +122,33 @@ export default function ProductAdd() {
         </div>
         <div className='division'>
           <label className='add-form-label'>Description:</label>
-          <textarea
-            className='add-form-text'
-            name="description"
-            onChange={handleInput}
-            value={formData.description}
-          />
+          <textarea className='add-form-text' name="description" onChange={handleInput} />
         </div>
         <div className='division'>
           <label className='add-form-label'>Units:</label>
-          <input
-            type="number"
-            className="add-form-input units-input"
-            name="units"
-            onChange={handleInput}
-            value={formData.units}
-            required
-          />
+          <input type="number" className="add-form-input units-input" name="units" required onChange={handleInput} />
         </div>
         <div className='division'>
           <label className='add-form-label'>Date of Produce:</label>
-          <input
-            type="date"
-            className="add-form-input date-input"
-            name="date_of_produce"
-            onChange={handleInput}
-            value={formData.date_of_produce}
-            required
-          />
+          <input type="date" className="add-form-input date-input" name="date_of_produce" onChange={handleInput} required />
         </div>
         <div className='division'>
           <label className='add-form-label'>Growing Practices:</label>
-          <input
-            type="text"
-            className="add-form-input growing-practices-input"
-            name="growing_practices"
-            onChange={handleInput}
-            value={formData.growing_practices}
-            required
-          />
+          <input type="text" className="add-form-input growing-practices-input" name="growing_practices" onChange={handleInput} required />
         </div>
         <div className='division'>
           <label className='add-form-label'>Place of Origin:</label>
-          <input
-            type="text"
-            className="add-form-input origin-input"
-            name="place_of_origin"
-            onChange={handleInput}
-            value={formData.place_of_origin}
-            required
-          />
+          <input type="text" className="add-form-input origin-input" name="place_of_origin" onChange={handleInput} required />
         </div>
         <div className='division'>
           <label className='add-form-label'>Product ID:</label>
-          <input
-            type="text"
-            className="add-form-input product-id-input"
-            onChange={handleInput}
-            name="product_id"
-            value={formData.product_id}
-            required
-          />
+          <input type="text" className="add-form-input product-id-input" onChange={handleInput} name="product_id" required />
         </div>
         <div className='division'>
           <label className='add-form-label'>Seller Name:</label>
-          <input
-            type="text"
-            className="add-form-input seller-name-input"
-            onChange={handleInput}
-            name="seller_name"
-            value={formData.seller_name}
-            required
-          />
+          <input type="text" className="add-form-input seller-name-input" onChange={handleInput} name="seller_name" required />
         </div>
-        <button className="add-button" type="submit">
-          Submit Form
-        </button>
+        <button className="add-button" type="submit">Submit Form</button>
       </form>
       <Footer />
     </>
