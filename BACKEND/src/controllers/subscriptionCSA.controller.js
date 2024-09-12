@@ -3,6 +3,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js"; // Assuming you have a User model
+import nodemailer from "nodemailer";
+
 export const subscriptionNew = asyncHandler(async (req, res) => {
     try{
     const { farmerId , product_culivated ,total_estimated_price ,initial_price , estimated_time_of_produce , subscribers } = req.body;
@@ -90,7 +92,7 @@ export const getAllSubscriptions = asyncHandler(async (req, res) => {
 
 export const subscribeToCSA = asyncHandler(async (req, res) => {
     try {
-        const { planId, username , email } = req.body;  // Get login details from the body
+        const { planId } = req.body;  // Get login details from the body
 
         // Find the user by email (or username) and validate password
         const user = await User.findOne({ $or : [{username} , {email}] });
@@ -149,6 +151,60 @@ export const subscribeToCSA = asyncHandler(async (req, res) => {
     }
 });
 
- 
+// Transporter configuration
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // Use Gmail service
+    auth: {
+        user: 'agricart022@gmail.com',
+        pass: 'xhig yqzq rcoq gsog' // Use an application-specific password
+    }
+});
 
+export const notifySubscribers = asyncHandler(async (req, res) => {
+    try {
+        const { planId, productName, estimatedTime } = req.body;
 
+        // Find the CSA plan and populate subscribers
+        const csaPlan = await CSA_plans.findById(planId).populate('subscribers.userId', 'email');
+
+        if (!csaPlan) {
+            return res.status(404).json({ message: "CSA Plan not found" });
+        }
+
+        // Fetch all subscriber emails
+        const subscriberEmails = csaPlan.subscribers.map(sub => sub.userId.email);
+
+        if (subscriberEmails.length === 0) {
+            return res.status(400).json({ message: "No subscribers found for this plan" });
+        }
+
+        // Email details
+        const mailOptions = {
+            from: 'agricart022@gmail.com',
+            to: subscriberEmails, // List of all subscriber emails
+            subject: `Product ${productName} is Ready for Pickup!`,
+            html: `
+                <p>Dear Subscriber,</p>
+                <p>We are happy to inform you that the product "${productName}" is now ready for pickup. The estimated time for product collection is ${estimatedTime}.</p>
+                <p>Please complete your payment by clicking the button below:</p>
+                <a href="http://localhost:3026/api/v1/payment/payment-form?planId=${planId}" style="display:inline-block;padding:10px 20px;font-size:16px;color:#fff;background-color:#007bff;text-decoration:none;border-radius:5px;">Pay Now</a>
+                <p>Thank you for being a part of our CSA plan!</p>
+                <p>Best regards,<br>AgriCart Team</p>
+            `
+        };
+
+        // Send the email
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log('Error sending email:', error);
+                return res.status(500).json({ message: 'Error sending email', error: error.message });
+            } else {
+                console.log('Email sent: ' + info.response);
+                return res.status(200).json({ message: 'Emails sent successfully!' });
+            }
+        });
+    } catch (error) {
+        console.log('Error notifying subscribers:', error);
+        return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+});
