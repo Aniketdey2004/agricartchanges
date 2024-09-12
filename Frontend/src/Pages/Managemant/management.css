@@ -1,80 +1,114 @@
-/* Managment.css */
-.farmer-profile-page {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background-color: #f4f4f9;
-  }
-  
-  .profile-container {
-    margin: 0 auto;
-    max-width: 900px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-  }
-  
-.heading{
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .show-subscriptions-btn,
-  .csa-add-button,
-  .product-add {
-    display: block;
-    width: 100%;
-    max-width: 250px;
-    margin: 10px auto;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    background-color: #28a745;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .show-subscriptions-btn:hover,
-  .csa-add-button:hover,
-  .product-add:hover {
-    background-color: #218838;
-  }
-  
-  .subscriptions-section {
-    margin-top: 20px;
-  }
-  
-  .subscriptions-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .subscription-item {
-    background: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .subscription-item p {
-    margin: 8px 0;
-    font-size: 16px;
-  }
-  
-  .subscription-item strong {
-    color: #333;
-  }
-  
-  .subscription-item:last-child {
-    margin-bottom: 0;
-  }
- 
+/* management.css */
 
-  
+.farmer-profile-page {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f4f4f9;
+}
+
+.profile-container {
+  margin: 0 auto;
+  max-width: 900px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.heading {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.show-subscriptions-btn,
+.csa-add-button,
+.product-add,
+.display-cart-btn {
+  display: block;
+  width: 100%;
+  max-width: 250px;
+  margin: 10px auto;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.show-subscriptions-btn:hover,
+.csa-add-button:hover,
+.product-add:hover,
+.display-cart-btn:hover {
+  background-color: #218838;
+}
+
+.subscriptions-section,
+.cart-section {
+  margin-top: 20px;
+}
+
+.subscriptions-list,
+.cart-list {
+  list-style: none;
+  padding: 0;
+}
+
+.subscription-item,
+.cart-order {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subscription-item p,
+.cart-order p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.subscription-item strong,
+.cart-order strong {
+  color: #333;
+}
+
+.subscription-item:last-child,
+.cart-order:last-child {
+  margin-bottom: 0;
+}
+
+.cart-products,
+.subscription-products {
+  margin-top: 10px;
+}
+
+.cart-product-item,
+.subscription-product-item {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.cart-product-item p,
+.subscription-product-item p {
+  margin: 5px 0;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+.cart-order{
+  margin: 3px 200px ;
+}
