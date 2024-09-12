@@ -93,7 +93,7 @@
 
 // export default connectDB;
 import mongoose from "mongoose";
-import { DB_NAME_Stocks, DB_NAME_Customer ,DB_NAME_Farmer,DB_NAME_Order,DB_NAME_Deliverypartner,DB_NAME_Cart, DB_NAME_CSAPlans} from "../constants.js";
+import { DB_NAME_Stocks, DB_NAME_Kisan , DB_NAME_Customer ,DB_NAME_Farmer,DB_NAME_Order,DB_NAME_Deliverypartner,DB_NAME_Cart, DB_NAME_CSAPlans} from "../constants.js";
 
 const connectDB = async () => {
     try {
@@ -124,9 +124,13 @@ const connectDB = async () => {
         // Create a new connection for the csa database
         const connectionInstanceCSAPlans = mongoose.createConnection(`${process.env.MONGODB_URI}/${DB_NAME_CSAPlans}`);
         console.log(`\nCsa plans Database connected!!`);
+        
+        // Create a new connection for the csa database
+        const connectionInstanceKisan = mongoose.createConnection(`${process.env.MONGODB_URI}/${DB_NAME_Kisan}`);
+        console.log(`\nKisan Database connected!!`);
 
         // Optionally return connections if needed for further use
-        return { connectionInstanceStocks, connectionInstanceCustomer,connectionInstanceFarmer,connectionInstanceOrder,connectionInstanceDeliveryPartner,connectionInstanceCart , connectionInstanceCSAPlans};
+        return { connectionInstanceStocks, connectionInstanceCustomer,connectionInstanceFarmer,connectionInstanceOrder,connectionInstanceDeliveryPartner,connectionInstanceCart , connectionInstanceCSAPlans , connectionInstanceKisan};
         
     } catch (error) {
         console.log("MONGODB connection FAILED for one or more databases", error);

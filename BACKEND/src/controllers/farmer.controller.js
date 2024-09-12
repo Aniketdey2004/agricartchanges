@@ -2,24 +2,35 @@
 
 import mongoose, { isValidObjectId } from "mongoose";
 import { Farmer } from "../models/farmer.model.js";
+import { Kisan } from "../models/kisanId.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 // Controller to add a new farmer
 const addFarmer = asyncHandler(async (req, res) => {
-    const { username, name, password, gender, address, pincode, state , email, farmingCertifications, farmingDetails, phoneNumber } = req.body;
+    const { username, name, password, gender, address, pincode, state , email, farmingCertifications, farmingDetails, phoneNumber , kisanID } = req.body;
 
-    if(
-        [username, name, password, gender, address, pincode, email, farmingCertifications, farmingDetails, phoneNumber].some( (field) => {
-        field?.trim() === ""
-        }) 
-    ){
-        //throw new ApiError(400,"name,username,password,email are required!")
+    // if(
+    //     [username, name, password, gender, address, pincode, email, farmingCertifications, farmingDetails, phoneNumber, kisanID].some((field) => {
+    //     field?.trim() === ""
+    //     }) 
+    // ){
+    //     //throw new ApiError(400,"name,username,password,email are required!")
+    //     return res.status(400).json({
+    //         statuscode : 400,
+    //         message:"all fields are required!"
+    //     })
+    // }
+
+    // Check if the Kisan ID is valid
+    const validKisan = await Kisan.find({ kisanID });
+    console.log("Kisan Query Result: ", validKisan); // Log the result
+    if (!validKisan) {
         return res.status(400).json({
-            statuscode : 400,
-            message:"all fields are required!"
-        })
+            statusCode: 400,
+            message: "Invalid or non-existent Kisan ID!You are not authorized!",
+        });
     }
 
     const existingFarmer = await Farmer.findOne({ $or: [{ username }, { email }] });
@@ -42,13 +53,14 @@ const addFarmer = asyncHandler(async (req, res) => {
         farmingCertifications,
         farmingDetails,
         phoneNumber,
+        kisanID
     });
 
     try {
         await newFarmer.save();
         return res.status(201).json({
             newFarmer,
-            message:"farmer added successfully"
+            message:"farmer added successfully.farmer is authorized and has valid kisan Id."
         });
     } catch (error) {
         console.log(error);
@@ -319,4 +331,3 @@ export {
     updateFarmer,
     deleteFarmer,
 };
- 

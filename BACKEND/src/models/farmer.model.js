@@ -52,6 +52,11 @@ const farmerSchema = new Schema({
         required: true,
         unique: true,
     },
+    kisanID: { 
+        type: String, 
+        required: true,
+        unique : true
+    },
     accesstoken:{
         type:String,
         default : null,
@@ -119,3 +124,4 @@ farmerSchema.methods.generateRefreshToken = function () {
 };
 
 export const Farmer = mongoose.model("Farmer", farmerSchema);
+
