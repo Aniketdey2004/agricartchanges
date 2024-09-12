@@ -11,20 +11,16 @@ export default function Cart() {
   const [showModal, setShowModal] = useState(false); // State to control modal visibility
   const [orderSuccess, setOrderSuccess] = useState(false); // State to control order success message
   const [order, setOrder] = useState({
-    userId: loggedData.loggedUser.loggedInUser._id,
+    userId: loggedData?.loggedUser?.loggedInUser?._id,
     products: cart,
-    address: loggedData.loggedUser.loggedInUser.address,
-    pincode: loggedData.loggedUser.loggedInUser.pincode,
+    address: loggedData?.loggedUser?.loggedInUser?.address,
+    pincode: loggedData?.loggedUser?.loggedInUser?.pincode,
   });
 
   useEffect(() => {
     console.log(loggedData);
     const fetchCartItems = async () => {
-      if (
-        loggedData &&
-        loggedData.loggedUser.loggedInUser &&
-        loggedData.loggedUser.loggedInUser._id
-      ) {
+      if (loggedData?.loggedUser?.loggedInUser?._id) {
         try {
           const response = await fetch(
             `http://localhost:3026/api/v1/cart/${loggedData.loggedUser.loggedInUser._id}`
@@ -34,9 +30,10 @@ export default function Cart() {
           console.log("API Response Data:", data);
 
           if (response.ok && Array.isArray(data.products)) {
-            setOrder((prevDetails) => {
-              return { ...prevDetails, products: data.products };
-            });
+            setOrder((prevDetails) => ({
+              ...prevDetails,
+              products: data.products,
+            }));
             setCart(data.products);
           } else {
             console.error(
@@ -61,7 +58,7 @@ export default function Cart() {
 
   const handleRemoveFromCart = async (productId, quantity) => {
     try {
-      const response = await fetch(`http://localhost:3026/api/v1/cart/delete`, {
+      const response = await fetch("http://localhost:3026/api/v1/cart/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -100,8 +97,7 @@ export default function Cart() {
     0
   );
 
-  function pay(event) {
-    event.preventDefault();
+  const pay = (event) => {
     fetch("http://localhost:3026/api/v1/orders/order", {
       method: "POST",
       body: JSON.stringify(order),
@@ -115,6 +111,24 @@ export default function Cart() {
         if (data.success) {
           setOrderSuccess(true); // Show success message
           setShowModal(false); // Close the modal
+
+          // Clear the cart after 1 second
+          setTimeout(() => {
+            fetch(`http://localhost:3026/api/v1/cart/clear/${order.userId}`, {
+              method: "DELETE",
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log("Cart cleared successfully");
+                // Reload the page after clearing the cart
+                window.location.reload();
+              })
+              .catch((error) => {
+                console.error("Error clearing cart:", error);
+              });
+          }, 1000); // Delay of 1 second before clearing the cart
+
+          // Hide success message after 5 seconds
           setTimeout(() => {
             setOrderSuccess(false);
           }, 5000);
@@ -123,7 +137,7 @@ export default function Cart() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   return (
     <>
@@ -169,6 +183,7 @@ export default function Cart() {
                       value={item.quantity}
                       min="1"
                       style={{ width: "70px", marginRight: "10px" }}
+                      readOnly
                     />
                     <span>₹{item.productId.Mrp * item.quantity}</span>
                     <button
