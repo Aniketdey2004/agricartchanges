@@ -1,47 +1,38 @@
-// Import the Mongoose library for MongoDB interaction.
 import mongoose from "mongoose";
-
-// Import the Product model, which defines the structure of stock items in the database.
+import multer from "multer";
 import { Product } from "../models/stock.model.js";
-
-// Import the asyncHandler utility, which simplifies error handling for asynchronous route handlers.
 import { asyncHandler } from "../utils/asyncHandler.js";
-
-// Import the ApiError utility for creating custom API error responses.
 import { ApiError } from "../utils/ApiError.js";
-
-// Import the ApiResponse utility for creating standardized API response objects.
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 // Controller function to add a new stock item.
-export const addStock = asyncHandler(async (req, res) => {
-    // Destructure the stock item details from the request body.
-    const { Mrp, description, units, date_of_produce, growing_practices, place_of_origin, product_id, seller_name, sellerDetails ,  category } = req.body;
+// export const addStock = asyncHandler(async (req, res) => {
+//     const { Mrp, description, units, date_of_produce, growing_practices, place_of_origin, product_id, seller_name, sellerDetails ,  category } = req.body;
 
-    // Create a new Product instance with the provided details.
-    const newStock = new Product({
-        // If a file is uploaded, store its path in the `photo` field; otherwise, set it to null.
-        photo: req.file ? req.file.path : null,
-        Mrp,
-        description,
-        units,
-        date_of_produce,
-        growing_practices,
-        place_of_origin,
-        product_id,
-        seller_name,
-        sellerDetails,
-        category
-    });
+//     // Create a new Product instance with the provided details.
+//     const newStock = new Product({
+//         // If a file is uploaded, store its path in the `photo` field; otherwise, set it to null.
+//         photo: req.file ? req.file.path : null,
+//         Mrp,
+//         description,
+//         units,
+//         date_of_produce,
+//         growing_practices,
+//         place_of_origin,
+//         product_id,
+//         seller_name,
+//         sellerDetails,
+//         category
+//     });
 
-    // Save the new stock item to the database.
-    await newStock.save();
+//     // Save the new stock item to the database.
+//     await newStock.save();
 
-    // Respond with a 201 status code and a success message, along with the saved stock item.
-    return res.status(201).json({
-        message : "Stock item added successfully", 
-        newStock});
-});
+//     // Respond with a 201 status code and a success message, along with the saved stock item.
+//     return res.status(201).json({
+//         message : "Stock item added successfully", 
+//         newStock});
+// });
 
 // Controller function to get stock details by either productId or category.
 export const getStockDetails = asyncHandler(async (req, res) => {
