@@ -24,7 +24,7 @@ import deliverypartnerRouter from './routes/deliverypartner.routes.js'
 import cartRouter from './routes/cart.routes.js'
 import CSARouter from "./routes/subscriptionCSA.routes.js";
 import paymentRouter from './routes/payment.routes.js'; // Adjust the path according to your folder structure
-
+import multerRouter from './middlewares/multer.middleware.js'
 // Routes declaration
 app.use("/api/v1/stocks", stockRouter);
 app.use("/api/v1/users", userRouter);
@@ -34,6 +34,7 @@ app.use("/api/v1/deliverypartners", deliverypartnerRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/subscriptions" , CSARouter);
 app.use('/api/v1/payment', paymentRouter); // Prefixing with /api or any other prefix you choose
+app.use('/api/v1/multer',multerRouter);
 
 // Global error-handling middleware (add this after all routes)
 app.use((err, req, res, next) => {
