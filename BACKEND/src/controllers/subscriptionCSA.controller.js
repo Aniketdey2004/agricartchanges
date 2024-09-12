@@ -92,10 +92,10 @@ export const getAllSubscriptions = asyncHandler(async (req, res) => {
 
 export const subscribeToCSA = asyncHandler(async (req, res) => {
     try {
-        const { planId } = req.body;  // Get login details from the body
+        const { planId ,email} = req.body;  // Get login details from the body
 
         // Find the user by email (or username) and validate password
-        const user = await User.findOne({ $or : [{username} , {email}] });
+        const user = await User.findOne({ email });
         if (!user) { // Assuming you have a password check method
             return res.status(401).json({
                 message: "Invalid login credentials",

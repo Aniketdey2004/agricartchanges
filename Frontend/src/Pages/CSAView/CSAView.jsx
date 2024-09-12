@@ -18,7 +18,7 @@ export default function CSAView() {
 
     const subscriber = {
         planId: details._id,
-        email: loggedData?.loggedUser?.loggedInUser?.email || "No email available",
+        email: loggedData.loggedUser.loggedInUser.email
     };
 
     const handleClosePopup = () => setShowPopup(false);
