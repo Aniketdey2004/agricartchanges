@@ -7,6 +7,7 @@ const stockSchema = new Schema(
   {
     photo: {
       type: String,
+      default : null
       //required: true,
     },
     Mrp: {
