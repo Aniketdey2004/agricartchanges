@@ -25,7 +25,7 @@ router.get('/', getAllOrders);
 
 // Route to get all orders for a farmer
 router.post('/farmer', getOrdersByFarmerId);
-//http://localhost:3026/api/v1/orders/order/:farmerId
+//http://localhost:3026/api/v1/orders/farmer
 export default router;
 
 
