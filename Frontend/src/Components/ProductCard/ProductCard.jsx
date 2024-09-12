@@ -3,12 +3,6 @@ import './ProductCard.css';
 import { Link } from "react-router-dom";
 
 export default function ProductCard(props) {
-    // Extract the file name from the stored photo path
-    const photoFilename = props.details.photo.split('\\').pop();
-    
-    // Construct the desired relative path
-    const photoPath = `../../../../uploads/${photoFilename}`;
-
     // Truncate description to 4 words if it exceeds that length
     const truncatedDescription = props.details.description.split(' ').length > 4
         ? props.details.description.split(' ').slice(0, 4).join(' ') + '...'
@@ -19,7 +13,7 @@ export default function ProductCard(props) {
             <div className="col-md-4 mb-4">
                 <div className="card h-100">
                     <img 
-                        src={photoPath} 
+                        src={props.details.photo} 
                         className="card-img-top product-img" 
                         alt="Product Image"
                     />

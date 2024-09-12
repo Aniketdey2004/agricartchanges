@@ -39,7 +39,7 @@ export default function ProductAdd() {
     data.append("category", formData.category);
     data.append("sellerDetails", formData.sellerDetails); // Append sellerDetails to the form data
 
-    fetch("http://localhost:3026/api/v1/stocks/", {
+    fetch("http://localhost:3026/api/v1/multer/upload", {
       method: "POST",
       body: data, // Send the FormData object
     })
