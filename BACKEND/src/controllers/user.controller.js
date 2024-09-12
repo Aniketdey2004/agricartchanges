@@ -190,15 +190,20 @@ const logOutUser = asyncHandler(async (req, res) => {
     const { username, email } = req.body;
 
     if (!username && !email) {
-        return res.status(400).json(new ApiResponse(
-            400,
-            null,
-            "Username or email is required!"
-        ));
+        return res.status(400).json({
+            message : "Username or email is required!"
+        });
     }
     const user = await User.findOne({
         $and: [{ username }, { email }]
     });
+
+    if (!user) {
+        return res.status(400).json({
+            message : "user not found!"
+        });
+    }
+
     try {
         // Unset the refresh token in the database
         await User.findByIdAndUpdate(

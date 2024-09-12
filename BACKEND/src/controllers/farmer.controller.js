@@ -145,128 +145,59 @@ const loginFarmer = asyncHandler(async (req, res) => {
     });
 });
 
-// const loginFarmer = asyncHandler(async (req, res) => {
-//     const { username, email, password } = req.body;
 
-//     if (!username && !email) {
-//         return res.status(400).json(new ApiResponse(400, null, "Username or email is required!"));
-//     }
+// Controller for farmer logout
+const logoutFarmer = asyncHandler(async (req, res) => {
+    const { username, email } = req.body;
 
-//     const farmer = await Farmer.findOne({ $and: [{ username }, { email }] });
-//     if (!farmer) {
-//         return res.status(404).json({ statuscode: 404, message: "Farmer not found" });
-//     }
+    if (!username && !email) {
+        return res.status(400).json({
+            message : "Username or email is required!"
+        });
+    }
 
-//     const isPasswordValid = await farmer.isPasswordCorrect(password);
-//     if (!isPasswordValid) {
-//         return res.status(401).json(new ApiResponse(401, null, "Password is incorrect!"));
-//     }
+    // Find the farmer using both username and email
+    const farmer = await Farmer.findOne({
+        $and: [{ username }, { email }]
+    });
 
-//     try {
-//         const { accesstoken, refreshtoken } = await generateAccessandRefreshTokenFarmer(farmer);
+    if (!farmer) {
+        return res.status(400).json({
+            message : "Farmer not found!"
+        });
+    }
 
-//         const loggedInFarmer = await Farmer.findById(farmer._id).select("-password -refreshtoken");
-//         return res.status(200).json({ loggedInFarmer, accesstoken, refreshtoken });
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json(new ApiResponse(500, null, "A server error occurred during login. Please try again."));
-//     }
-    
-    
-    
-    
-    
-    
-//     // const { username, email, password } = req.body;
+    try {
+        // Unset the refresh token in the database
+        await Farmer.findByIdAndUpdate(
+            farmer._id,
+            {
+                $unset: {
+                    refreshtoken: 1 // Removes the refresh token field from the document
+                }
+            },
+            {
+                new: true
+            }
+        );
 
-//     // if (!username && !email) {
-//     //     //throw new ApiError(400, "Username or email is required!");
-//     //     return res.status(400).json(new ApiResponse(
-//     //         400,
-//     //         null,
-//     //         "Username or email is required!"
-//     //     ));
-//     // }
+        const options = {
+            httpOnly: true,
+            secure: true
+        };
 
-//     // // Find farmer by username or email
-//     // const farmer = await Farmer.findOne({
-//     //     $and: [{ username }, { email }]
-//     // });
-
-//     // if (!farmer) {
-//     //     //throw new ApiError(404, "Farmer does not exist!");
-//     //     console.log("Farmer not found! status code 404");
-//     //     return res.status(404).json({
-//     //         statuscode:404,
-//     //         message:"farmer not found"
-//     //     })
-//     // }else{
-//     //     // Check if the password is correct
-//     //     const isPasswordValid = await farmer.isPasswordCorrect(password);
-//     //     if (!isPasswordValid) {
-//     //     return res.status(401).json(new ApiResponse(
-//     //         401,
-//     //         null,
-//     //         "Password is incorrect!"
-//     //     ));
-//     //     }
-//     // }
-
-    
-
-//     // try {
-//     //     // Get the generated tokens
-//     //     //const tokens = await generateAccessandRefreshToken(user);
-//     //     const { accesstoken, refreshtoken } = await generateAccessandRefreshTokenFarmer(farmer);
-
-//     //     // Exclude password and refreshToken from the user details
-//     //     const loggedInFarmer = await Farmer.findById(farmer._id).select("-password -refreshtoken");
-
-//     //     // Return the tokens and user details in the response body
-//     //     return res.status(200)
-//     //     .json({loggedInFarmer , accesstoken , refreshtoken})
-//     //     // .json(new ApiResponse(
-//     //     //     200,
-//     //     //     { user: loggedInUser, accesstoken, refreshtoken },
-//     //     //     "User Logged In Successfully!"
-//     //     // ));
-//     // } catch (error) {
-//     //     // Handle any errors during token generation
-//     //     // return res.status(500).json(new ApiResponse(
-//     //     //     500,
-//     //     //     null,
-//     //     //     "A internal server error occurred during login. Please try again."
-//     //     // ));
-//     //     console.log(error);
-//     //     throw new ApiError(500,"server issue")
-//     // }
-
-
-
-
-
-
-
-
-
-//     // // Generate access and refresh tokens
-//     // const accessToken = farmer.generateAccessToken();
-//     // const refreshToken = farmer.generateRefreshToken();
-
-//     // // Save refresh token to the farmer's document
-//     // farmer.refreshtoken = refreshToken;
-//     // await farmer.save({ validateBeforeSave: false });
-
-//     // // Exclude password and refresh token from the response
-//     // const loggedInFarmer = await Farmer.findById(farmer._id).select("-password -refreshtoken");
-
-//     // // Send tokens and farmer details in the response
-//     // res.status(200).json(new ApiResponse("Farmer logged in successfully", {
-//     //     farmer: loggedInFarmer,
-//     //     accessToken,
-//     //     refreshToken,
-//     // }));
-// });
+        // Clear the refresh token cookie
+        return res
+            .status(200)
+            .clearCookie("refreshToken", options)
+            .json({
+                message: "Farmer logged out successfully"
+            });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(new ApiResponse(500, {}, "Internal server error"));
+    }
+});
 
 // Controller for farmer logout
 // const logoutFarmer = asyncHandler(async (req, res) => {
@@ -382,7 +313,7 @@ const deleteFarmer = asyncHandler(async (req, res) => {
 export {
     addFarmer,
     loginFarmer,
-    //logoutFarmer,
+    logoutFarmer,
     getFarmerDetails,
     getAllFarmers,
     updateFarmer,

@@ -30,7 +30,7 @@ const router = Router();
 router.post('/register', addUser);//http://localhost:3026/api/v1/users/register
 router.post("/login",loginUser);//http://localhost:3026/api/v1/users/login
 // router.get("/logout",verifyJWT,logOutUser)
-router.post("/logout",logOutUser)//http://localhost:3026/api/v1/users/logout
+router.post("/logout",logOutUser)//http://localhost:3026/ api/v1/users/logout
 // router.post("/login",loginUser);
 router.get('/', getAllUsers);//http://localhost:3026/api/v1/users
 router.get('/:userId', getUserDetails);//http://localhost:3026/api/v1/users/:userId
@@ -39,4 +39,4 @@ router.get('/:userId', deleteUser);//http://localhost:3026/api/v1/users/:userId
 
 
 //exporting the router
-export default router;
+export default router; 
