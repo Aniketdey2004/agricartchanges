@@ -11,9 +11,14 @@ export default function CSAView() {
     const loggedData = useContext(UserContext);
     const [showPopup, setShowPopup] = useState(false);
 
+    // Check if details and loggedData exist before using them
+    if (!details) {
+        return <p>No details available for this CSA plan.</p>;
+    }
+
     const subscriber = {
         planId: details._id,
-        email: loggedData.loggedUser.loggedInUser.email,
+        email: loggedData?.loggedUser?.loggedInUser?.email || "No email available",
     };
 
     const handleClosePopup = () => setShowPopup(false);
@@ -21,21 +26,21 @@ export default function CSAView() {
 
     function addSubscriber() {
         console.log(subscriber);
-        fetch(`http://localhost:3026/api/v1/subscriptions/subscribeToCSA`, {
+        fetch('http://localhost:3026/api/v1/subscriptions/subscribeToCSA', {
             method: "POST",
             body: JSON.stringify(subscriber),
             headers: {
                 "Content-Type": "application/json"
             }
         })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                handleClosePopup(); // Close the popup after subscribing
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            handleClosePopup(); // Close the popup after subscribing
+        })
+        .catch((err) => {
+            console.log("Error subscribing to CSA:", err);
+        });
     }
 
     return (
@@ -43,25 +48,25 @@ export default function CSAView() {
             <Navbar />
             <div className="c-wrapper">
                 <div className="c-container">
-                    <h1 className="c-product-name">{details.product_culivated.productName}</h1>
-                    <p className="c-category">{details.product_culivated.category}</p>
+                    <h1 className="c-product-name">{details.product_culivated?.productName}</h1>
+                    <p className="c-category">{details.product_culivated?.category}</p>
 
                     <div className="c-details-grid">
                         <div className="c-detail-card">
                             <h4>Product Description</h4>
-                            <p>{details.product_culivated.description}</p>
+                            <p>{details.product_culivated?.description}</p>
                         </div>
                         <div className="c-detail-card">
                             <h4>Growing Practices</h4>
-                            <p>{details.product_culivated.growingPractices}</p>
+                            <p>{details.product_culivated?.growingPractices}</p>
                         </div>
                         <div className="c-detail-card">
                             <h4>Place of Origin</h4>
-                            <p>{details.product_culivated.placeOfOrigin}</p>
+                            <p>{details.product_culivated?.placeOfOrigin}</p>
                         </div>
                         <div className="c-detail-card">
                             <h4>Estimated Units</h4>
-                            <p>{details.product_culivated.estimated_units} Kg</p>
+                            <p>{details.product_culivated?.estimated_units} Kg</p>
                         </div>
                         <div className="c-detail-card">
                             <h4>Total Estimated Price</h4>

@@ -17,6 +17,7 @@ export default function RegisterAsFarmer() {
     phoneNumber: '',
     farmingCertifications: '',
     farmingDetails: '',
+    kisanId:''
   });
 
   const [message, setMessage] = useState({
@@ -214,6 +215,19 @@ export default function RegisterAsFarmer() {
               name="email"
               placeholder="Enter your email"
               value={farmer.email}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Kisan ID</label>
+            <input
+              type="text"
+              onChange={handleInput}
+              className="form-control"
+              id="kisanID"
+              name="kisanID"
+              placeholder="Enter your Kisan ID"
+              value={farmer.kisanID}
               required
             />
           </div>

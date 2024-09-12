@@ -95,7 +95,7 @@ const Management = () => {
           </div>
         </div>
 
-        <h1 className="heading">Cart</h1>
+        <h1 className="heading">A products</h1>
         <button className="display-cart-btn" onClick={displayCart}>
           Display Cart Items
         </button>
