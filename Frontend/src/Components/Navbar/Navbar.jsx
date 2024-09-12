@@ -18,33 +18,41 @@ const Navbar = (props) => {
   ];
 
   // Check if loggedData and loggedData.loggedUser exist before accessing them
-  const user = loggedData.loggedUser?.loggedInUser
+  const user = loggedData.loggedUser
     ? {
-        username: loggedData.loggedUser.loggedInUser.username,
-        email: loggedData.loggedUser.loggedInUser.email,
-      }
+      username: loggedData.loggedUser?.loggedInUser
+      ? loggedData.loggedUser.loggedInUser.username
+      : loggedData.loggedUser.loggedInFarmer?.username, // Username from loggedInUser or loggedInFarmer
+      email: loggedData.loggedUser?.loggedInUser
+      ? loggedData.loggedUser.loggedInUser.email
+      : loggedData.loggedUser.loggedInFarmer?.email, // Email from loggedInUser or loggedInFarmer
+    }
     : null;
 
-  function logout() {
-    if (user) {
-      localStorage.removeItem('user');
-      loggedData.setLoggedUser(null);
-      fetch(`http://localhost:3026/api/v1/users/logout`, {
-        method: 'POST',
-        body: JSON.stringify(user),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
+    function logout() {
+      if (user) {
+        localStorage.removeItem('user');
+        loggedData.setLoggedUser(null);
+        const logoutAPI = loggedData.loggedUser.loggedInUser
+          ? 'http://localhost:3026/api/v1/users/logout'
+          : 'http://localhost:3026/api/v1/farmers/logoutFarmer'; // Conditional API based on user type
+        fetch(logoutAPI, {
+          method: 'POST',
+          body: JSON.stringify(user),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
-  }
+    
 
   function handleAccountRedirect() {
     if (loggedData.loggedUser?.loggedInUser) {
