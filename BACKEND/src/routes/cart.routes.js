@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addToCart, checkoutCart, getCartByUserId, deleteFromCart } from '../controllers/cart.controller.js';
+import { addToCart, checkoutCart, getCartByUserId, deleteFromCart,deleteCartByUserId } from '../controllers/cart.controller.js';
 
 const router = Router();
 
@@ -14,5 +14,12 @@ router.post('/checkout', checkoutCart);
 
 // Route to get cart by user ID
 router.get('/:userId', getCartByUserId);
+
+//Route to checkout cart
+router.delete('/:userId', checkoutCart);
+
+// Route to delete the entire cart by user ID
+router.delete('/clear/:userId', deleteCartByUserId);
+
 
 export default router;

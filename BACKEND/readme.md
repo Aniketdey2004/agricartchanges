@@ -444,3 +444,5 @@ response received by frontend
         "__v": 0
     }
 ]
+
+Cart example 

@@ -100,7 +100,7 @@ const checkoutCart = async (req, res) => {
   session.startTransaction();
 
   try {
-    const { userId, address } = req.body;
+   const { userId, address } = req.body;
 
     const cart = await Cart.findOne({ userId }).session(session);
 
@@ -108,14 +108,14 @@ const checkoutCart = async (req, res) => {
       throw new Error('Cart is empty');
     }
 
-    const order = new Order({
-      userId,
-      products: cart.products,
-      totalAmount: cart.totalPrice,
-      address,
-    });
+    // const order = new Order({
+    //   userId,
+    //   products: cart.products,
+    //   totalAmount: cart.totalPrice,
+    //   address,
+    // });
 
-    await order.save({ session });
+    // await order.save({ session });
     await Cart.deleteOne({ userId }).session(session);
 
     await session.commitTransaction();
@@ -128,6 +128,7 @@ const checkoutCart = async (req, res) => {
     console.error('Error during checkout:', error.message);
     return res.status(500).json({ message: 'Error during checkout', error: error.message });
   }
+
 };
 
 // Get the cart by user ID.
@@ -154,9 +155,34 @@ const getCartByUserId = async (req, res) => {
   }
 };
 
+/**
+ * Delete the entire cart by user ID.
+ */
+const deleteCartByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Find the cart for the user
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found for this user' });
+    }
+
+    // Delete the cart from the database
+    await Cart.deleteOne({ userId });
+
+    return res.status(200).json({ message: 'Cart deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting cart:', error.message);
+    return res.status(500).json({ message: 'Error deleting cart', error: error.message });
+  }
+};
+
 export {
   addToCart,
   deleteFromCart,  // Export the new delete function
   checkoutCart,
   getCartByUserId,
+  deleteCartByUserId,
 };
