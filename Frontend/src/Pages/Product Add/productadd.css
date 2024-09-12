@@ -66,4 +66,8 @@
     margin-top: 10px;
     width: 100px; /* Adjust width as needed */
   }
+  .toggle-mode-btn{
+    justify-content:right;
+    width: 10%;
+  }
   
