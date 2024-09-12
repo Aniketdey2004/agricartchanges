@@ -3,7 +3,7 @@ import multer from "multer";
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {//req get all the request and if some file is being uploaded that can also be stored. reason why we use multer 
       //cb(null, 'Agricart/BACKEND/uploads')
-      cb(null, 'C:/Agricart/BACKEND/uploads')
+      cb(null, 'C:/Agricart/uploads')
     },
     filename: function (req, file, cb) {
       
