@@ -8,6 +8,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 // Controller to add a new farmer
+/*
 const addFarmer = asyncHandler(async (req, res) => {
     const { username, name, password, gender, address, pincode, state , email, farmingCertifications, farmingDetails, phoneNumber , kisanID } = req.body;
 
@@ -76,26 +77,93 @@ const addFarmer = asyncHandler(async (req, res) => {
         });
     }
 });
+*/
+const addFarmer = asyncHandler(async (req, res) => {
+    const { username, name, password, gender, address, pincode, state, email, farmingCertifications, farmingDetails, phoneNumber, kisanID } = req.body;
+
+    // Validate required fields
+    if (!username || !name || !password || !gender || !address || !pincode || !state || !email || !farmingCertifications || !farmingDetails || !phoneNumber || !kisanID) {
+        return res.status(400).json({
+            statuscode: 400,
+            message: "All fields are required, including kisanID",
+        });
+    }
+
+    // Check if the Kisan ID is valid
+    const validKisan = await Kisan.find({ kisanID });  // Use findOne instead of find to get a single document
+    console.log(kisanID)
+    if (!validKisan) {
+        return res.status(400).json({
+            statusCode: 400,
+            message: "Invalid or non-existent Kisan ID! You are not authorized!",
+        });
+    }
+
+    // Check for existing farmer by username or email
+    const existingFarmer = await Farmer.findOne({ $or: [{ username }, { email }] });
+    if (existingFarmer) {
+        return res.status(409).json({
+            statuscode: 409,
+            message: "Username or email already exists!",
+        });
+    }
+
+    // Create the new farmer
+    const newFarmer = new Farmer({
+        username,
+        name,
+        password,
+        gender,
+        address,
+        pincode,
+        state,
+        email,
+        farmingCertifications,
+        farmingDetails,
+        phoneNumber,
+        kisanID
+    });
+
+    try {
+        await newFarmer.save();
+        return res.status(201).json({
+            newFarmer,
+            message: "Farmer added successfully. Farmer is authorized and has a valid Kisan ID.",
+        });
+    } catch (error) {
+        console.log(error);
+        if (error.code === 11000) {
+            return res.status(409).json(new ApiResponse(
+                409,
+                null,
+                "Duplicate key error/Username, email, or phone number already exists!"
+            ));
+        }
+        return res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
 
 // Generate access and refresh tokens
-    const generateAccessandRefreshTokenFarmer = async (farmer) => {
-        try {
-            const accesstoken = farmer.generateAccessToken();
-            const refreshtoken = farmer.generateRefreshToken();
-            farmer.refreshtoken = refreshtoken;
-            await farmer.save({ validateBeforeSave: false });
+    // const generateAccessandRefreshTokenFarmer = async (farmer) => {
+    //     try {
+    //         const accesstoken = farmer.generateAccessToken();
+    //         const refreshtoken = farmer.generateRefreshToken();
+    //         farmer.refreshtoken = refreshtoken;
+    //         await farmer.save({ validateBeforeSave: false });
             
 
-            // Use the tokens directly here
-            // For example, set them in response headers or any other processing
-            res.setHeader('Authorization', `Bearer ${accesstoken}`);
-            res.setHeader('Refresh-Token', refreshtoken);
-            return { accesstoken, refreshtoken };
-        } catch (error) {
-            console.log("server error:  ",501)
-            throw new ApiError(501, "Something went wrong while generating tokens!");
-        }
-    };
+    //         // Use the tokens directly here
+    //         // For example, set them in response headers or any other processing
+    //         res.setHeader('Authorization', `Bearer ${accesstoken}`);
+    //         res.setHeader('Refresh-Token', refreshtoken);
+    //         return { accesstoken, refreshtoken };
+    //     } catch (error) {
+    //         console.log("server error:  ",501)
+    //         throw new ApiError(501, "Something went wrong while generating tokens!");
+    //     }
+    // };
 
 // Controller for farmer login
 const loginFarmer = asyncHandler(async (req, res) => {

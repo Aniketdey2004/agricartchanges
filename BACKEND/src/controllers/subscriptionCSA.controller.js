@@ -104,7 +104,7 @@ export const subscribeToCSA = asyncHandler(async (req, res) => {
 
         // Find the CSA plan by planId
         const csaPlan = await CSA_plans.findById(planId);
-        if (!csaPlan) {
+        if (!csaPlan) { 
             return res.status(404).json({
                 message: "CSA Plan not found",
             });
